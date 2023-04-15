@@ -9,7 +9,13 @@ struct node_t
         int data;
 };
 
-struct node_t* add_to_list(struct node_t* bottom, int a)
+struct list_t
+{
+        struct node_t* head;
+        struct node_t* tail;
+};
+
+struct node_t* append(struct node_t* bottom, int a)
 {
 	struct node_t* elem = calloc(1, sizeof(struct node_t));
 	elem->next = NULL;
@@ -22,21 +28,74 @@ struct node_t* add_to_list(struct node_t* bottom, int a)
 	return elem;
 }
 
+struct list_t* create_list()
+{
+        struct list_t* list = calloc(1, sizeof(struct list_t));
+        list->head = calloc(1, sizeof(struct node_t));
+
+        assert(list != NULL && "Heap overflow!");
+        assert(list->head != NULL && "Heap overflow!");
+
+        list->head->next = NULL;
+        list->head->prev = NULL;
+        list->head->data = 0;
+
+        return list;
+}
+
+void print_list(struct list_t* list)
+{
+        struct node_t* head = list->head;
+
+        while (head != NULL)
+        {
+                printf("%d ", head->data);
+                head = head->next;
+        }
+
+        printf("\n");
+        return;
+}
+
+void delete_list(struct list_t* list)
+{
+        struct node_t* top = list->head;
+	struct node_t* next;
+
+	while (top != NULL)
+	{
+		next = top->next;
+		free(top);
+		top = next;
+	}
+
+        free(list);
+}
+
 int main()
 {
         int len = 0, n = 0, elem = 0;
-        struct node_t* bottom = NULL;
+        struct list_t* list = NULL;
+        struct node_t* tail = NULL;
         struct node_t* head = NULL;
 
         scanf("%d%d", &len, &n);
         scanf("%d", &elem);
-        head = add_to_list(head, elem);
-
+        list = create_list();
+        list->head->data = elem;
+        head = list->head;
+        
         for (int i = 0; i < len - 1; ++i)
         {
                 scanf("%d", &elem);
-                bottom = add_to_list(bottom, elem);
+                list->head = append(list->head, elem);
         }
+
+        list->tail = list->head;
+        list->head = head;
+
+        print_list(list);
+        delete_list(list);
 
         return 0;
 }
