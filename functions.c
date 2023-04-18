@@ -1,19 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-
-struct node_t
-{
-        struct node_t* next;
-        struct node_t* prev;
-        int data;
-};
-
-struct list_t
-{
-        struct node_t* head;
-        struct node_t* tail;
-};
+#include "functions.h"
 
 struct node_t* append(struct node_t* bottom, int a)
 {
@@ -72,30 +60,3 @@ void delete_list(struct list_t* list)
         free(list);
 }
 
-int main()
-{
-        int len = 0, n = 0, elem = 0;
-        struct list_t* list = NULL;
-        struct node_t* tail = NULL;
-        struct node_t* head = NULL;
-
-        scanf("%d%d", &len, &n);
-        scanf("%d", &elem);
-        list = create_list();
-        list->head->data = elem;
-        head = list->head;
-        
-        for (int i = 0; i < len - 1; ++i)
-        {
-                scanf("%d", &elem);
-                list->head = append(list->head, elem);
-        }
-
-        list->tail = list->head;
-        list->head = head;
-
-        print_list(list);
-        delete_list(list);
-
-        return 0;
-}
