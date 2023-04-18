@@ -3,41 +3,54 @@
 #include <assert.h>
 #include "functions.h"
 
-struct node_t* append(struct node_t* bottom, int a)
+List_t* create_list(long size)
 {
-	struct node_t* elem = calloc(1, sizeof(struct node_t));
-	elem->next = NULL;
-        elem->prev = bottom;
-	elem->data = a;
-
-	if (bottom != NULL)
-		bottom->next = elem;
-	
-	return elem;
-}
-
-struct list_t* create_list()
-{
-        struct list_t* list = calloc(1, sizeof(struct list_t));
-        list->head = calloc(1, sizeof(struct node_t));
+        List_t* list = calloc(1, sizeof(List_t));
+        list->head = list->fst_dist = NULL;
+        list->size = size;
+        list->full_nodes = 0;
 
         assert(list != NULL && "Heap overflow!");
-        assert(list->head != NULL && "Heap overflow!");
-
-        list->head->next = NULL;
-        list->head->prev = NULL;
-        list->head->data = 0;
 
         return list;
 }
 
-void print_list(struct list_t* list)
+Node_t* newNode(long data) 
 {
-        struct node_t* head = list->head;
+        Node_t* res = calloc(1, sizeof(Node_t));
+        res->next = res->prev = NULL;
+        res->data = data;
+        res->value = 2;
+        
+        return res;
+}
+
+void enqueue(List_t* list, Node_t ** hash, long data)
+{
+        //in progress... 
+}
+
+int isListFull(List_t* list)
+{
+    return list->size == list->full_nodes;
+}
+
+int isListEmpty(List_t* list)
+{
+        if ((list->head == NULL) && (list->full_nodes == 0))
+                return 1;
+        else
+                return 0;
+}
+
+
+void print_list(List_t* list)
+{
+        Node_t* head = list->head;
 
         while (head != NULL)
         {
-                printf("%d ", head->data);
+                printf("%ld ", head->data);
                 head = head->next;
         }
 
@@ -45,10 +58,10 @@ void print_list(struct list_t* list)
         return;
 }
 
-void delete_list(struct list_t* list)
+void delete_list(List_t* list)
 {
-        struct node_t* top = list->head;
-	struct node_t* next;
+        Node_t* next;
+        Node_t* top = list->head;
 
 	while (top != NULL)
 	{
@@ -60,3 +73,15 @@ void delete_list(struct list_t* list)
         free(list);
 }
 
+/*Node_t* append(Node_t* bottom, long a)
+{
+	Node_t* elem = calloc(1, sizeof(Node_t));
+	elem->next = NULL;
+        elem->prev = bottom;
+	elem->data = a;
+
+	if (bottom != NULL)
+		bottom->next = elem;
+	
+	return elem;
+}*/

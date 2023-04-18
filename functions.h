@@ -1,21 +1,30 @@
 #pragma once
 
-struct node_t
-{
-        struct node_t* next;
-        struct node_t* prev;
-        int data;
-	int value;
-};
+typedef struct node_t {
+        struct node_t *next, *prev;
+        long data;
+	unsigned value;
+} Node_t;
 
-struct list_t
-{
-        struct node_t* head;
-	struct node_t* fst_dist;
-	int size;
-};
+typedef struct list_t {
+        Node_t *head, *fst_dist;
+	long size;
+        long full_nodes; //how many are nodes in list? to compare with cache size
+} List_t;
 
-struct node_t* append(struct node_t* bottom, int a);
-struct list_t* create_list();
-void print_list(struct list_t* list);
-void print_list(struct list_t* list);
+List_t* create_list(long size);
+
+Node_t* newNode(long data);
+
+void enqueue(List_t* list, Node_t ** hash, long data);
+//definition of hash can be changed
+
+int isListEmpty(List_t* list);
+
+int isListFull(List_t* list);
+
+void print_list(List_t* list);
+
+void delete_list(List_t* list);
+
+//Node_t* append(Node_t* bottom, int a);
