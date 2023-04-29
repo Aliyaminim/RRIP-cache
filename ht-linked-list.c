@@ -1,5 +1,5 @@
 // deletes linked list's elements one by one
-void delete_ht_linked_list(struct node_t *top)
+/*void delete_ht_linked_list(struct node_t *top)
 {
     //cycling should be fixed someday... 
 
@@ -24,3 +24,4 @@ struct node_t *add_to_ht_linked_list(struct node_t *bottom, int num)
 
     return elem;
 }
+*/
