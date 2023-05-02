@@ -1,4 +1,10 @@
 #pragma once
-void delete_ht_linked_list(struct node_t *top);
 
-struct node_t *add_to_ht_linked_list(struct node_t *bottom, int num);
+struct node_ht {
+    struct node_ht *next;
+    int data;
+};
+
+void delete_ht_linked_list(struct node_ht *top);
+
+struct node_ht *add_to_ht_linked_list(struct node_ht *bottom, int num);
