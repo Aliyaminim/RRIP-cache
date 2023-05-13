@@ -6,11 +6,25 @@
 List_t* create_list(long size)
 {
         List_t* list = calloc(1, sizeof(List_t));
-        list->head = list->fst_dist = list->tail = NULL;
+        assert(list != NULL && "Heap overflow!");
+        Node_t* cur = NULL;
+        Node_t* prev = NULL;
+
+        list->fst_dist = NULL;
+        list->head = newNode(0);
+        cur = list->head;
+        
+        for (int i = 0; i < size - 1; ++i)
+        {
+                prev = cur;
+                cur = newNode(0);
+                cur->prev = prev;
+                prev->next = cur;
+        }
+
+        list->tail = cur;
         list->size = size;
         list->full_nodes = 0;
-
-        assert(list != NULL && "Heap overflow!");
 
         return list;
 }
@@ -138,7 +152,7 @@ void delete_list(List_t* list)
         free(list);
 }
 
-/*Node_t* append(Node_t* bottom, long a)
+Node_t* append(Node_t* bottom, long a)
 {
 	Node_t* elem = calloc(1, sizeof(Node_t));
 	elem->next = NULL;
@@ -149,4 +163,4 @@ void delete_list(List_t* list)
 		bottom->next = elem;
 	
 	return elem;
-}*/
+}
