@@ -21,11 +21,12 @@ int main()
     }
     list = create_list(m);
 
-    for (long i = 0; i < n; i++) {
+    for (long i = 0; i < n; i++) 
+    {
         scanf("%ld", &page);
+        
         if (kol - 1 < page) {
-            hash =
-                (Node_t **) realloc(hash, (page + 1) * sizeof(Node_t *));
+            hash = (Node_t **) realloc(hash, (page + 1) * sizeof(Node_t *));
             assert(hash != NULL);
             for (long i = kol; i <= page; i++)
                 hash[i] = NULL;
