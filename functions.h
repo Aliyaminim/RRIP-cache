@@ -54,4 +54,6 @@ void print_list(List_t* list);
 /* A utility function to delete List */
 void delete_list(List_t* list);
 
+/* A function which re-link cache blocks if new page was in cache */
+void cache_hit(Node_t* node, List_t* list);
 //Node_t* append(Node_t* bottom, int a);

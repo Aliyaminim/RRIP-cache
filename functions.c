@@ -151,7 +151,7 @@ void delete_list(List_t* list)
 	return elem;
 }*/
 
-void cache_hit(Node_t* node, List_t* list, Node_t** hash)
+void cache_hit(Node_t* node, List_t* list)
 {
         if (list->head == node)
         {
@@ -182,34 +182,16 @@ void cache_hit(Node_t* node, List_t* list, Node_t** hash)
         list->head = node;  
         node->value = 0;
 
-        return 0;
+        return;
 }
 
-void cache_miss(Node_t* node, List_t* list, Node_t** hash)
-{
-
-}
-
-        // while (list->fst_dist == NULL)
-        // {
-        //         cur = list->head;
-
-        //         for (int i = 0; i < list->size - 1; ++i)
-        //         {
-        //                 if (cur->value == 2 && list->fst_dist == NULL)
-        //                         list->fst_dist = cur;
-
-        //                 ++(cur->value);
-        //                 cur = cur->next;
-        //         }
-        // }
 
 int rereference(long page, List_t* list, Node_t** hash)
 {       
         Node_t* node = NULL;
         Node_t* cur = NULL;
 
-        if (node = is_page_cached(page))
+        if (node = is_element_in_ht(page)) // Change arguments
                 cache_hit(node, list, hash);
         else
                 cache_miss(node, list, hash);
