@@ -1,18 +1,42 @@
 #pragma once
 
-int modular = 10007;
+long modular = 100007;
 
-struct node_t {
-    //todo
+long hash_function(long data)
+{
+    return (data % modular);
+}
+
+typedef struct HtElem HtElem;
+
+struct HtElem {
+    long data;
+    Node_t *value;
 };
 
-//simple hash table in terms of array with linked list head in each element
-//
-//P.S. I understand that it is not the best hash table implementation, but it is what it is
-struct hash_table {
-    struct node_ht *arr[modular] = { NULL };
+typedef struct HashTable HashTable;
 
+struct HashTable {
+    HtElem **elems;
+    NodeHtLl **overflow_list;
 };
 
-//todo __HT_LINKED_LIST_HEAD__ 
+NodeHtLl **create_overflow_list(HashTable * table);
 
+void free_overflow_list(HashTable * table);
+
+HtElem *create_item(long data, Node_t * value);
+
+HashTable *create_table();
+
+void free_item(HtElem * elem);
+
+void free_table(HashTable * table);
+
+void solve_collision(long index, HtElem * elem, HashTable * table);
+
+void ht_insert(HashTable * table, long data, Node_t * value);
+
+void ht_delete(HashTable * table, long data);
+
+Node_t *is_element_in_ht(HashTable * table, long data);

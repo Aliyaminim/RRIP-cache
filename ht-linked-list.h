@@ -1,10 +1,16 @@
 #pragma once
 
-struct node_ht {
-    struct node_ht *next;
-    int data;
+typedef struct NodeHtLl NodeHtLl;
+
+struct NodeHtLl {
+    HtElem *elem;
+    NodeHtLl *next;
 };
 
-void delete_ht_linked_list(struct node_ht *top);
+NodeHtLl *ht_ll_create();
 
-struct node_ht *add_to_ht_linked_list(struct node_ht *bottom, int num);
+NodeHtLl *ht_ll_insert(NodeHtLl * list, HtElem * elem);
+
+HtElem *ht_ll_remove(NodeHtLl * list);
+
+void ht_ll_free(NodeHtLl * list);
