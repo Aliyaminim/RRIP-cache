@@ -150,3 +150,68 @@ void delete_list(List_t* list)
 	
 	return elem;
 }*/
+
+void cache_hit(Node_t* node, List_t* list, Node_t** hash)
+{
+        if (list->head == node)
+        {
+                list->head->value = 0;
+                return;
+        }
+
+        if (list->tail == node)
+        {
+                list->tail = node->prev;
+                list->tail->next = NULL;
+                list->head->prev = node;
+                node->next = list->head;
+                node->prev = NULL; 
+                list->head = node;
+                node->value = 0;
+                return;
+        }
+
+        if (list->fst_dist == node)
+                list->fst_dist = node->next;           
+
+        node->next->prev = node->prev;
+        node->prev->next = node->next;
+        node->prev = NULL;
+        node->next = list->head;
+        list->head->prev = node;
+        list->head = node;  
+        node->value = 0;
+
+        return 0;
+}
+
+void cache_miss(Node_t* node, List_t* list, Node_t** hash)
+{
+
+}
+
+        // while (list->fst_dist == NULL)
+        // {
+        //         cur = list->head;
+
+        //         for (int i = 0; i < list->size - 1; ++i)
+        //         {
+        //                 if (cur->value == 2 && list->fst_dist == NULL)
+        //                         list->fst_dist = cur;
+
+        //                 ++(cur->value);
+        //                 cur = cur->next;
+        //         }
+        // }
+
+int rereference(long page, List_t* list, Node_t** hash)
+{       
+        Node_t* node = NULL;
+        Node_t* cur = NULL;
+
+        if (node = is_page_cached(page))
+                cache_hit(node, list, hash);
+        else
+                cache_miss(node, list, hash);
+
+}
