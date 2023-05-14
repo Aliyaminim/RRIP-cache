@@ -186,14 +186,20 @@ void cache_hit(Node_t* node, List_t* list)
 }
 
 
-int rereference(long page, List_t* list, Node_t** hash)
+int replacement_RRIP(long page, List_t* list, Node_t** hash)
 {       
         Node_t* node = NULL;
-        Node_t* cur = NULL;
 
         if (node = is_element_in_ht(page)) // Change arguments
-                cache_hit(node, list, hash);
+        {
+                cache_hit(node, list);
+                return 1;
+        }
+
         else
-                cache_miss(node, list, hash);
+        {
+                enqueue(list, hash, page);
+                return 0;
+        }
 
 }
