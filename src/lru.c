@@ -1,23 +1,12 @@
-/* A C program which shows implementation of LRU cache using queue and hashing. 
-   This program is essential for comparing the efficiency of the RRIP with 
-   the LRU cache replacement. */
+/* A C program which includes functions to perform LRU cache replacement 
+   using queue and hashing. 
+   This program is essential for comparing the efficiency of the RRIP replacement 
+   with the LRU cache replacement. */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-
-
-typedef struct QNode {
-    long page;
-    struct QNode *prev, *next;
-} QNode;
-
-typedef struct Queue {
-    QNode *top, *end;
-    long max_cell;
-    long full_cell;
-} Queue;
-
+#include "lru.h"
 
 Queue *createQueue(long m)
 {
@@ -73,7 +62,7 @@ int del_qnode(Queue * queue, QNode ** hash)
     return 0;
 }
 
-int lru(Queue * queue, long page, QNode ** hash)
+int lru(long page, Queue * queue, QNode ** hash)
 {
     QNode *tmp = hash[page];
     if (isQueueEmpty(queue)) {
@@ -107,39 +96,3 @@ int lru(Queue * queue, long page, QNode ** hash)
     }
 }
 
-int main()
-{
-    QNode **hash;
-    long m, n, page, kol, cashe_hit = 0;
-    Queue *queue;
-
-    scanf("%ld", &m); //m is a cache size
-    scanf("%ld", &n); //n is a number of requests
-
-    hash = calloc(n + 1, sizeof(QNode *));
-    assert(hash != NULL);
-    kol = n + 1; //kol is a current hash size 
-
-    if (m == 0) {
-        printf("%s\n", "The cache size must be greater than zero.");
-        return 0;
-    }
-    queue = createQueue(m);
-
-    for (long i = 0; i < n; i++) {
-        scanf("%ld", &page);
-        if (kol - 1 < page) {
-            //if the hash size isn't enough to store a new page, it needs to be resized.
-            hash = (QNode **) realloc(hash, (page + 1) * sizeof(QNode *));
-            assert(hash != NULL);
-            for (long i = kol; i <= page; i++)
-                hash[i] = NULL;
-            kol = page + 1;
-        }
-
-        cashe_hit += lru(queue, page, hash);
-    }
-
-    printf("%ld\n", cashe_hit); //prints overall number of cache hits during whole process
-    return 0;
-}

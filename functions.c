@@ -64,13 +64,11 @@ void enqueue(List_t* list, Node_t ** hash, long data)
                 if (list->fst_dist == NULL) {
                         int i = 3 - list->tail->value; 
                         Node_t* tmp = list->head;
-                        int state = 0;
                         
                         for (;tmp != NULL;) {
                                 tmp->value += i;
-                                if ((tmp->value == 3) && (state == 0)) {
+                                if ((tmp->value == 3) && (list->fst_dist == NULL)) {
                                         list->fst_dist = tmp;
-                                        state = 1;
                                 }
                                 tmp = tmp->next;
                         }
@@ -109,48 +107,6 @@ void enqueue(List_t* list, Node_t ** hash, long data)
 
 }
 
-void print_list(List_t* list)
-{
-        Node_t* head = list->head;
-
-        while (head != NULL)
-        {
-                printf("%ld ", head->data);
-                head = head->next;
-        }
-
-        printf("\n");
-        return;
-}
-
-void delete_list(List_t* list)
-{
-        Node_t* next;
-        Node_t* top = list->head;
-
-	while (top != NULL)
-	{
-		next = top->next;
-		free(top);
-		top = next;
-	}
-
-        free(list);
-}
-
-/*Node_t* append(Node_t* bottom, long a)
-{
-	Node_t* elem = calloc(1, sizeof(Node_t));
-	elem->next = NULL;
-        elem->prev = bottom;
-	elem->data = a;
-
-	if (bottom != NULL)
-		bottom->next = elem;
-	
-	return elem;
-}*/
-
 void cache_hit(Node_t* node, List_t* list)
 {
         if (list->head == node)
@@ -186,7 +142,7 @@ void cache_hit(Node_t* node, List_t* list)
 }
 
 
-int replacement_RRIP(long page, List_t* list, Node_t** hash)
+/*int replacement_RRIP(long page, List_t* list, Node_t** hash)
 {       
         Node_t* node = NULL;
 
@@ -201,5 +157,33 @@ int replacement_RRIP(long page, List_t* list, Node_t** hash)
                 enqueue(list, hash, page);
                 return 0;
         }
+}*/
 
+void print_list(List_t* list)
+{
+        Node_t* head = list->head;
+
+        while (head != NULL)
+        {
+                printf("%ld ", head->data);
+                head = head->next;
+        }
+
+        printf("\n");
+        return;
+}
+
+void delete_list(List_t* list)
+{
+        Node_t* next;
+        Node_t* top = list->head;
+
+	while (top != NULL)
+	{
+		next = top->next;
+		free(top);
+		top = next;
+	}
+
+        free(list);
 }

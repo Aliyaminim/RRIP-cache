@@ -44,16 +44,19 @@ int isListFull(List_t* list);
 /* A function to delete a Node from List */
 void dequeue(Node_t* node, List_t* list, Node_t ** hash);
 
-/* A function to add a Node with given 'data' to both List and Hash using RRIP*/
+/* A function to add a Node with given 'data' to both List and Hash using RRIP, if 
+   it hasn't been in List before */
 void enqueue(List_t* list, Node_t ** hash, long data);
 //definition of hash can be changed
+
+/* A function to re-link cache blocks, if current Node has already been in List */
+void cache_hit(Node_t* node, List_t* list);
+
+/* A function to perform cache replacement using RRIP*/
+int replacement_RRIP(long page, List_t* list, Node_t** hash);
 
 /* A utility function to print List */
 void print_list(List_t* list);
 
 /* A utility function to delete List */
 void delete_list(List_t* list);
-
-/* A function which re-link cache blocks if new page was in cache */
-void cache_hit(Node_t* node, List_t* list);
-//Node_t* append(Node_t* bottom, int a);
