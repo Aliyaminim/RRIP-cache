@@ -1,3 +1,6 @@
+/* A C file that includes realization of the functions used in
+   Static Re-Reference Interval Prediction(RRIP) Cache Replacement */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -141,7 +144,7 @@ void cache_hit(Node_t* node, List_t* list)
         return;
 }
 
-
+//FIXME
 /*int replacement_RRIP(long page, List_t* list, Node_t** hash)
 {       
         Node_t* node = NULL;

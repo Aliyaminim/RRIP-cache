@@ -7,7 +7,7 @@
 typedef struct node_t {
         struct node_t *next, *prev;
         long data; //the data stored in this Node
-	unsigned value; //the RRIP value stored by a 2-bit register per Node (details below)
+        unsigned value; //the RRIP value stored by a 2-bit register per Node (details below)
 } Node_t;
 /* An RRPV of 0 implies that a cache block is predicted to be re-referenced
    in the near-immediate future while RRPV of 3 implies that a cache 
@@ -23,7 +23,7 @@ typedef struct list_t {
         /* head is a pointer to the head of the List
            fst_dist is a pointer to the first Node in the List with distant RRIP
            tail is a pointer to the tail of the List */
-	long size; //total number of Nodes in List
+	     long size; //total number of Nodes in List
         long full_nodes; //number of filled Nodes in List
 } List_t;
 
