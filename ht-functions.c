@@ -2,7 +2,7 @@
 #include "ht-functions.h"
 
 NodeHtLl** create_overflow_list(HashTable* table) {
-    NodeHtLl** buckets = (NodeHtLl**) calloc (table->size, sizeof(NodeHtLl*));
+    NodeHtLl** buckets = (NodeHtLl**) calloc (modular, sizeof(NodeHtLl*));
     for (int i=0; i < modular; ++i)
         buckets[i] = NULL;
     return buckets;
@@ -74,8 +74,7 @@ void ht_insert(HashTable* table, long data, Node_t * value) {
     }
 
     else {
-            if (current_elem->data == data)
-				current_elem->data == data) {
+            if (current_elem->data == data) {
                 table->elems[index]->value = value;
 				value = table->elems[index]->value
                 return;
