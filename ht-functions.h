@@ -25,11 +25,9 @@ NodeHtLl **create_overflow_list(HashTable * table);
 
 void free_overflow_list(HashTable * table);
 
-HtElem *create_item(long data, Node_t * value);
+HtElem *create_elem(long data, Node_t * value);
 
 HashTable *create_table();
-
-void free_item(HtElem * elem);
 
 void free_table(HashTable * table);
 

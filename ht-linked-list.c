@@ -1,27 +1,64 @@
-// deletes linked list's elements one by one
-void delete_ht_linked_list(struct node_ht *top)
-{
-    //cycling should be fixed someday... 
-
-    while (top != NULL) {
-	struct node_ht *new_top = top->next;
-	free(top);
-	top = new_top;
-    }
+NodeHtLl* ht_ll_create () {
+    NodeHtLl* list = (NodeHtLl*) malloc (sizeof(NodeHtLl));
+    return list;
 }
 
-
-// adds element to linked list
-struct node_ht *add_to_ht_linked_list(struct node_ht *bottom, int num)
-{
-    struct node_ht *elem = calloc(1, sizeof(struct node_ht));
-    elem->next = NULL;
-    elem->data = num;
-
-    if (bottom != NULL) {
-	bottom->next = elem;
+ NodeHtLl* ht_ll_insert(NodeHtLl* list, HtElem* elem) {
+    if (!list) {
+        NodeHtLl* head = ht_ll_create();
+        head->elem = elem;
+        head->next = NULL;
+        list = head;
+        return list;
+    } 
+    
+    else if (list->next == NULL) {
+        NodeHtLl* node = ht_ll_create();
+        node->elem = elem;
+        node->next = NULL;
+        list->next = node;
+        return list;
     }
 
-    return elem;
+    NodeHtLl* temp = list;
+    while (temp->next->next) {
+        temp = temp->next;
+    }
+    
+    NodeHtLl* node = ht_ll_create();
+    node->elem = elem;
+    node->next = NULL;
+    temp->next = node;
+    
+    return list;
 }
 
+ HtElem* ht_ll_remove(NodeHtLl* list) {
+    if (!list)
+        return NULL;
+    if (!list->next)
+        return NULL;
+    NodeHtLl* node = list->next;
+    NodeHtLl* temp = list;
+    temp->next = NULL;
+    list = node;
+    HtElem* it = NULL;
+    temp->elem = it;
+    free(temp->elem->data);
+    free(temp->elem->value);
+    free(temp->elem);
+    free(temp);
+    return it;
+}
+
+ void ht_ll_free(NodeHtLl* list) {
+    NodeHtLl* temp = list;
+    while (list) {
+        temp = list;
+        list = list->next;
+        free(temp->elem->data);
+        free(temp->elem->value);
+        free(temp->elem);
+        free(temp);
+    }
+}
