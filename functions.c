@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include "../hash/ht-functions.h"
+#include "../hash/ht-linked-list.h"
 #include "functions.h"
 
 List_t* create_list(long size)
@@ -144,12 +146,12 @@ void cache_hit(Node_t* node, List_t* list)
         return;
 }
 
-//FIXME
-/*int replacement_RRIP(long page, List_t* list, Node_t** hash)
+
+int replacement_RRIP(long page, List_t* list, HashTable* table)
 {       
         Node_t* node = NULL;
 
-        if (node = is_element_in_ht(page)) // Change arguments
+        if (node = ht_search(table, page)) // Change arguments
         {
                 cache_hit(node, list);
                 return 1;
@@ -160,7 +162,7 @@ void cache_hit(Node_t* node, List_t* list)
                 enqueue(list, hash, page);
                 return 0;
         }
-}*/
+}
 
 void print_list(List_t* list)
 {
