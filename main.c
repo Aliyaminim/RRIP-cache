@@ -22,10 +22,10 @@ int main()
         count_RRIP tracks a number of cache hits in RRIP replacement
         count_LRU tracks a number of cache hits in LRU replacement
     */
-    int sc;
     List_t* list;
     Queue* queue;
 
+    //scanning
     while(!scanf("%ld", &cache_size) || (cache_size <= 0)) {
         printf("Waiting for the cache size... It must be positive number\n");
     } 
@@ -54,16 +54,18 @@ int main()
     //work begins...
     for (long i = 0; i < num_req; i++) 
     {
-        scanf("%ld", &page);
+        while(!scanf("%ld", &page) || (page <= 0)) {
+            printf("Waiting for your request... It must be positive number\n");
+        }   
         
         //FIXME: temporarily we need to update hash each time
-        if (kol - 1 < page) {
+        if (hashsize - 1 < page) {
             hash_RRIP = (Node_t **) realloc(hash_RRIP, (page + 1) * sizeof(Node_t *));
-            for (long i = kol; i <= page; i++)
+            for (long i = hashsize; i <= page; i++)
                 hash_RRIP[i] = NULL;
 
             hash_LRU = (QNode **) realloc(hash_LRU, (page + 1) * sizeof(QNode* ));
-            for (long i = kol; i <= page; i++)
+            for (long i = hashsize; i <= page; i++)
                 hash_LRU[i] = NULL;
 
             if ((hash_RRIP == NULL) || (hash_LRU == NULL)) {
@@ -71,7 +73,7 @@ int main()
                 abort();
             }   
 
-            kol = page + 1;
+            hashsize = page + 1;
         }
         //
         
