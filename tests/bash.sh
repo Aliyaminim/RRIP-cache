@@ -3,13 +3,29 @@
 echo Testing has started!
 echo 
 echo "Recency friendly access pattern tests:"
-for i in recency_friendly_access_pattern/*.in; do echo $i; done
-echo 
+for file in tests/recency_friendly_access_pattern/*.in; do
+    echo $file
+    ./program < $file
+    echo 
+done
+
 echo "Thrashing access pattern tests:"
-for i in thrashing_access_pattern/*.in; do echo $i; done
-echo 
+for file in tests/thrashing_access_pattern/*.in; do
+    echo $file
+    ./program < $file
+    echo 
+done
+
 echo "Mixed access pattern(1) tests:"
-for i in mixed_access1_pattern/*.in; do echo $i; done
-echo 
+for file in tests/mixed_access1_pattern/*.in; do
+    echo $file
+    ./program < $file
+    echo 
+done
+
 echo "Mixed access pattern(2) tests:"
-for i in mixed_access2_pattern/*.in; do echo $i; done
+for file in tests/mixed_access2_pattern/*.in; do
+    echo $file
+    ./program < $file
+    echo 
+done
