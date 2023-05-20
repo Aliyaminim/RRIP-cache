@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <assert.h>
 #include "functions.h"
+#include "./hash/ht-linked-list.h"
+#include "./hash/ht-functions.h"
 #include "./lru/lru.h"
 
 int main()
@@ -78,9 +80,9 @@ int main()
         }
         //
         
-		count_LRU += lru(page, queue, hash_LRU);
+		//count_LRU += lru(page, queue, hash_LRU);
         //count_RRIP += replacement_RRIP(page, list, hash_RRIP);
-        //count_RRIP += replacement_RRIP(page, list, table);
+        count_RRIP += replacement_RRIP(page, list, table);
     }
 
     assert((count_LRU >= 0) && (count_RRIP >= 0) && "Something went wrong, code doesn't work correctly");  

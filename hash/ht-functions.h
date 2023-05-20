@@ -7,12 +7,6 @@ long hash_function(long data)
     return (data % modular);
 }
 
-typedef struct HashTable HashTable;
-
-struct HashTable {
-    HtElem **elems;
-    NodeHtLl **overflow_list;
-};
 
 NodeHtLl **create_overflow_list(HashTable * table);
 

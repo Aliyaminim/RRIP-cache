@@ -27,6 +27,28 @@ typedef struct list_t {
         long full_nodes; //number of filled Nodes in List
 } List_t;
 
+typedef struct HtElem HtElem;
+
+struct HtElem {
+    long data;
+    Node_t *value;
+};
+
+typedef struct NodeHtLl NodeHtLl;
+
+struct NodeHtLl {
+    HtElem *elem;
+    NodeHtLl *next;
+}; 
+
+typedef struct HashTable HashTable;
+
+struct HashTable {
+    HtElem **elems;
+    NodeHtLl **overflow_list;
+};
+
+
 /* A utility function to create an empty List.
    The list can have at most 'size' nodes */
 List_t* create_list(long size);
@@ -42,18 +64,18 @@ int isListEmpty(List_t* list);
 int isListFull(List_t* list);
 
 /* A function to delete a Node from List */
-void dequeue(Node_t* node, List_t* list, Node_t ** hash);
+void dequeue(Node_t* node, List_t* list, HashTable* table);
 
 /* A function to add a Node with given 'data' to both List and Hash using RRIP, if 
    it hasn't been in List before */
-void enqueue(List_t* list, Node_t ** hash, long data);
+void enqueue(List_t* list, HashTable* table, long data);
 //definition of hash can be changed
 
 /* A function to re-link cache blocks, if current Node has already been in List */
 void cache_hit(Node_t* node, List_t* list);
 
 /* A function to perform cache replacement using RRIP*/
-int replacement_RRIP(long page, List_t* list, Node_t** hash);
+int replacement_RRIP(long page, List_t* list, HashTable* table);
 
 /* A utility function to print List */
 void print_list(List_t* list);

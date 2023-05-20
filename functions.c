@@ -4,9 +4,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-#include "../hash/ht-functions.h"
-#include "../hash/ht-linked-list.h"
 #include "functions.h"
+#include "./hash/ht-linked-list.h"
+#include "./hash/ht-functions.h"
+
 
 List_t* create_list(long size)
 {
@@ -62,7 +63,7 @@ void dequeue(Node_t* node, List_t* list, HashTable* table)
         free(node);
 }
 
-void enqueue(List_t* list, Node_t ** table, long data)
+void enqueue(List_t* list, HashTable* table, long data)
 {
         Node_t* curnode = newNode(data);
 
