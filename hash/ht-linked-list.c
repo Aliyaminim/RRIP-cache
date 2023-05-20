@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include "../lru/lru.h"
 #include "../functions.h"
 #include "ht-linked-list.h"
 

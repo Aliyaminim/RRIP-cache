@@ -27,6 +27,7 @@ typedef struct list_t {
     long full_nodes;		//number of filled Nodes in List
 } List_t;
 
+
 typedef struct HtElem HtElem;
 
 struct HtElem {
@@ -47,7 +48,6 @@ struct HashTable {
     HtElem **elems;
     NodeHtLl **overflow_list;
 };
-
 
 /* A utility function to create an empty List.
    The list can have at most 'size' nodes */
@@ -94,3 +94,5 @@ void enqueue1(List_t * list, Node_t ** hash, const long data);
 
 /* A function to perform cache replacement using RRIP*/
 int replacement_RRIP1(const long page, List_t * list, Node_t ** hash);
+
+void update_hash(long *phashsize, long page, Node_t** hash_RRIP, QNode** hash_LRU);

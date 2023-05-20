@@ -4,14 +4,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include "./lru/lru.h"
 #include "functions.h"
 #include "./hash/ht-functions.h"
-#include "./lru/lru.h"
+
+
 
 int main()
 {
-<<<<<<< HEAD
-
 	Node_t** hash_RRIP;
     QNode** hash_LRU;
     long hashsize; 
@@ -23,7 +23,7 @@ int main()
         page is a current request
         count_RRIP tracks a number of cache hits in RRIP replacement
         count_LRU tracks a number of cache hits in LRU replacement
-        count_check
+        count_check is 
     */
     List_t* list;
     List_t* list_check;
@@ -61,7 +61,7 @@ int main()
         }   
    
         if (hashsize - 1 < page) {
-            update_hash(*hashsize, page, hash_RRIP, hash_LRU)
+            update_hash(&hashsize, page, hash_RRIP, hash_LRU);
         }
              
 		count_LRU += lru(page, queue, hash_LRU);

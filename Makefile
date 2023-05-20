@@ -1,10 +1,10 @@
 program: main.o functions.o lru.o ht-linked-list.o ht-functions.o 
 	gcc -o program main.o functions.o lru.o ht-linked-list.o ht-functions.o 
 
-main.o: main.c functions.h ./lru/lru.h ./hash/ht-functions.h 
+main.o: main.c ./lru/lru.h functions.h ./hash/ht-functions.h
 	gcc -c main.c
 
-functions.o: functions.c functions.h ./hash/ht-linked-list.h ./hash/ht-functions.h
+functions.o: functions.c ./lru/lru.h functions.h ./hash/ht-linked-list.h ./hash/ht-functions.h
 	gcc -c functions.c
 
 lru.o: ./lru/lru.c ./lru/lru.h
@@ -20,3 +20,5 @@ test:
 
 clean: 
 	rm *.o program
+	rm *.c~ program
+	rm ./lru/*.c~ program

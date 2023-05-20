@@ -4,9 +4,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include "./lru/lru.h"
 #include "functions.h"
 #include "./hash/ht-linked-list.h"
 #include "./hash/ht-functions.h"
+
 
 
 List_t *create_list(const long size)
