@@ -81,10 +81,15 @@ int main()
         //count_RRIP += replacement_RRIP(page, list, hash_RRIP);
     }
 
+    assert((count_LRU >= 0) && (count_RRIP >= 0) && "Something went wrong, code doesn't work correctly");  
     printf("Number of cache hits:\nfor RRIP %ld\nfor LRU %ld\n", count_RRIP, count_LRU);
 
     if ((count_LRU > count_RRIP) && (count_LRU != 0))
         printf("Suprisingly LRU has performed better...\n");
+
+    if ((count_LRU == 0) && (count_RRIP == 0))
+        printf("OMG, no cache hits at all...");
+    
 
 	delete_list(list);
     //delete_queue(queue);
