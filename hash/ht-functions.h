@@ -1,12 +1,8 @@
 #pragma once
 
-long modular = 100007;
+static const long modular = 100007;
 
-long hash_function(long data)
-{
-    return (data % modular);
-}
-
+long hash_function(long data);
 
 NodeHtLl **create_overflow_list(HashTable * table);
 

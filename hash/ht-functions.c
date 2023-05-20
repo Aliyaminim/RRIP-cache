@@ -5,6 +5,10 @@
 #include "ht-linked-list.h"
 #include "ht-functions.h"
 
+long hash_function(long data)
+{
+    return (data % modular);
+}
 
 NodeHtLl** create_overflow_list(HashTable* table) {
     NodeHtLl** buckets = (NodeHtLl**) calloc (modular, sizeof(NodeHtLl*));

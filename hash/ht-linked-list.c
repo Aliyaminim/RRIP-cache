@@ -10,7 +10,7 @@ NodeHtLl* ht_ll_create () {
     return list;
 }
 
- NodeHtLl* ht_ll_insert(NodeHtLl* list, HtElem* elem) {
+NodeHtLl* ht_ll_insert(NodeHtLl* list, HtElem* elem) {
     if (!list) {
         NodeHtLl* head = ht_ll_create();
         head->elem = elem;
@@ -40,7 +40,7 @@ NodeHtLl* ht_ll_create () {
     return list;
 }
 
- HtElem* ht_ll_remove(NodeHtLl* list) {
+HtElem* ht_ll_remove(NodeHtLl* list) {
     if (!list)
         return NULL;
     if (!list->next)
@@ -58,7 +58,7 @@ NodeHtLl* ht_ll_create () {
     return it;
 }
 
- void ht_ll_free(NodeHtLl* list) {
+void ht_ll_free(NodeHtLl* list) {
     NodeHtLl* temp = list;
     while (list) {
         temp = list;
