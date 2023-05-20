@@ -82,3 +82,15 @@ void print_list(List_t* list);
 
 /* A utility function to delete List */
 void delete_list(List_t* list);
+
+/* A function to delete a Node from List */
+void dequeue1(Node_t* node, List_t* list, Node_t ** hash);
+
+/* A function to add a Node with given 'data' to both List and Hash using RRIP, if 
+   it hasn't been in List before */
+void enqueue1(List_t* list, Node_t ** hash, long data);
+//definition of hash can be changed
+
+
+/* A function to perform cache replacement using RRIP*/
+int replacement_RRIP1(long page, List_t* list, Node_t** hash);

@@ -215,3 +215,91 @@ void delete_list(List_t* list)
 
         free(list);
 }
+
+void dequeue1(Node_t* node, List_t* list, Node_t ** hash) 
+{
+        list->fst_dist = node->next;
+
+        if (node != list->head) 
+                node->prev->next = node->next;
+        else 
+                list->head = node->next;
+
+        if (node != list->tail)
+                node->next->prev = node->prev;
+        else 
+                list->tail = node->prev;
+        
+        
+        list->full_nodes--;
+        hash[node->data] = NULL;
+        free(node);
+}
+
+void enqueue1(List_t* list, Node_t ** hash, long data)
+{
+        Node_t* curnode = newNode(data);
+
+        if (isListFull(list)) {
+                if (list->fst_dist == NULL) {
+                        int i = 3 - list->tail->value; 
+                        Node_t* tmp = list->head;
+                        
+                        for (;tmp != NULL;) {
+                                tmp->value += i;
+                                if ((tmp->value == 3) && (list->fst_dist == NULL)) {
+                                        list->fst_dist = tmp;
+                                }
+                                tmp = tmp->next;
+                        }
+                }
+
+                Node_t* hlp = list->fst_dist->prev;
+                dequeue1(list->fst_dist, list, hash);
+                
+                if (hlp != NULL) {
+                        if (hlp != list->tail)
+                                hlp->next->prev = curnode;
+                        else 
+                                list->tail = curnode;
+                        hlp->next = curnode;   
+                } else {
+                        list->head->prev = curnode;
+                        list->head = curnode;
+                }
+
+                curnode->next = list->fst_dist;
+                curnode->prev = hlp;
+
+                list->full_nodes++;
+                hash[data] = curnode;
+        } else {
+                if (isListEmpty(list)) {
+                        list->head = curnode;
+                } else {
+                        list->tail->next = curnode;
+                        curnode->prev = list->tail;
+                }
+                list->tail = curnode;
+                list->full_nodes++;
+                hash[data] = curnode;
+        }
+
+}
+
+int replacement_RRIP1(long page, List_t* list,  Node_t ** hash)
+{       
+        Node_t* node = NULL;
+
+        if (node = hash[page]) // Change arguments
+        {
+                cache_hit(node, list);
+                return 1;
+        }
+
+        else
+        {
+                enqueue1(list, hash, page);
+                return 0;
+        }
+}

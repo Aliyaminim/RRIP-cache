@@ -24,6 +24,7 @@ int main()
         count_LRU tracks a number of cache hits in LRU replacement
     */
     List_t* list;
+    List_t* list2;
     Queue* queue;
     HashTable *table = create_table();
 
@@ -49,6 +50,7 @@ int main()
     //
 
     list = create_list(cache_size);
+    list2 = create_list(cache_size);
     queue = createQueue(cache_size);
     count_LRU = 0;
     count_RRIP = 0;
@@ -80,7 +82,7 @@ int main()
         //
         
 		//count_LRU += lru(page, queue, hash_LRU);
-        //count_RRIP += replacement_RRIP(page, list, hash_RRIP);
+        count_LRU += replacement_RRIP1(page, list2, hash_RRIP);
         count_RRIP += replacement_RRIP(page, list, table);
     }
 
