@@ -63,7 +63,7 @@ void solve_collision(long index, HtElem* elem, HashTable* table) {
     }
     else {
         //table->overflow_list[index] = linkedlist_insert(head, elem);
-        //table->overflow_list[index] = ht_ll_insert(head, elem);       choose right option please
+        table->overflow_list[index] = ht_ll_insert(head, elem);
         return;
     }
  }
