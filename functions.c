@@ -41,7 +41,7 @@ int isListEmpty(List_t* list)
 }
 
 
-void dequeue(Node_t* node, List_t* list, Node_t ** hash, HashTable* table) 
+void dequeue(Node_t* node, List_t* list, HashTable* table) 
 {
         list->fst_dist = node->next;
 
@@ -57,12 +57,12 @@ void dequeue(Node_t* node, List_t* list, Node_t ** hash, HashTable* table)
         
         
         list->full_nodes--;
-        ht_delete(node->data);
+        ht_delete(table, node->data);
         //hash[node->data] = NULL;
         free(node);
 }
 
-void enqueue(List_t* list, Node_t ** hash, long data)
+void enqueue(List_t* list, Node_t ** table, long data)
 {
         Node_t* curnode = newNode(data);
 
@@ -81,7 +81,7 @@ void enqueue(List_t* list, Node_t ** hash, long data)
                 }
 
                 Node_t* hlp = list->fst_dist->prev;
-                dequeue(list->fst_dist, list, hash);
+                dequeue(list->fst_dist, list, table);
                 
                 if (hlp != NULL) {
                         if (hlp != list->tail)
@@ -98,7 +98,8 @@ void enqueue(List_t* list, Node_t ** hash, long data)
                 curnode->prev = hlp;
 
                 list->full_nodes++;
-                hash[data] = curnode;
+                ht_insert(table, data, curnode);
+                //hash[data] = curnode;
         } else {
                 if (isListEmpty(list)) {
                         list->head = curnode;
@@ -108,7 +109,8 @@ void enqueue(List_t* list, Node_t ** hash, long data)
                 }
                 list->tail = curnode;
                 list->full_nodes++;
-                hash[data] = curnode;
+                ht_insert(table, data, curnode);
+                //hash[data] = curnode;
         }
 
 }
@@ -160,10 +162,29 @@ int replacement_RRIP(long page, List_t* list, HashTable* table)
 
         else
         {
-                enqueue(list, hash, page);
+                enqueue(list, table, page);
                 return 0;
         }
 }
+
+
+//FIXME
+/*int replacement_RRIP(long page, List_t* list, Node_t** hash)
+{       
+        Node_t* node = NULL;
+
+        if (node = is_element_in_ht(page)) // Change arguments
+        {
+                cache_hit(node, list);
+                return 1;
+        }
+
+        else
+        {
+                enqueue(list, hash, page);
+                return 0;
+        }
+}*/
 
 void print_list(List_t* list)
 {
