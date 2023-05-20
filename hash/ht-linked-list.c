@@ -55,7 +55,6 @@ HtElem *ht_ll_remove(NodeHtLl * list)
 	list = node;
 	HtElem *it = NULL;
 	temp->elem = it;
-	//free(temp->elem->data); is it okay to free long int variable?
 	free(temp->elem->value);
 	free(temp->elem);
 	free(temp);
@@ -68,7 +67,6 @@ void ht_ll_free(NodeHtLl * list)
 	while (list) {
 		temp = list;
 		list = list->next;
-		//free(temp->elem->data); is it okay to free long int variable?
 		free(temp->elem->value);
 		free(temp->elem);
 		free(temp);

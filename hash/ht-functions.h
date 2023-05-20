@@ -27,7 +27,7 @@ void solve_collision(long index, HtElem * elem, HashTable * table);
 //inserts an element to the hash table, takes the pointer to hash table, long integer data and node_t (chain) pointer
 void ht_insert(HashTable * table, long data, Node_t * value);
 
-//searches an element in the hash table, takes a pointer and long integer data needed to be looked for
+//searches an element in the hash table, takes a pointer and long integer data needed to be looked for, returns a pointer of node_t if found, otherwise NULL
 Node_t* ht_search(HashTable* table, long data);
 
 //deletes and element from the hash table with reconnecting of the other elements, takes a pointer to the hash table and long integer data needed to be deleted
