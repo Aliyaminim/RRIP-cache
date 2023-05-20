@@ -1,6 +1,6 @@
 #pragma once
 
-static const long modular = 100007;
+static const long modular = 100019;
 
 long hash_function(long data);
 
