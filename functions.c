@@ -303,3 +303,20 @@ int replacement_RRIP1(long page, List_t* list,  Node_t ** hash)
                 return 0;
         }
 }
+
+void update_hash(long* phashsize, long page, Node_t** hash_RRIP, QNode** hash_LRU) {
+        hash_RRIP = (Node_t **) realloc(hash_RRIP, (page + 1) * sizeof(Node_t *));
+        for (long i = *phashsize; i <= page; i++)
+                hash_RRIP[i] = NULL;
+
+        hash_LRU = (QNode **) realloc(hash_LRU, (page + 1) * sizeof(QNode* ));
+        for (long i = *phashsize; i <= page; i++)
+                hash_LRU[i] = NULL;
+
+        if ((hash_RRIP == NULL) || (hash_LRU == NULL)) {
+                fprintf(stderr, "Memory exhausted(during realloc)\n");
+                abort();
+        }   
+
+        *phashsize = page + 1;
+}

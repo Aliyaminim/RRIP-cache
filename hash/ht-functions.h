@@ -18,7 +18,6 @@ void solve_collision(long index, HtElem * elem, HashTable * table);
 
 void ht_insert(HashTable * table, long data, Node_t * value);
 
-
 Node_t* ht_search(HashTable* table, long data);
 
 void ht_delete(HashTable * table, long data);
