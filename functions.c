@@ -39,7 +39,7 @@ int isListEmpty(List_t* list)
 }
 
 
-void dequeue(Node_t* node, List_t* list, Node_t ** hash) 
+void dequeue(Node_t* node, List_t* list, Node_t ** hash, HashTable* table) 
 {
         list->fst_dist = node->next;
 
@@ -55,7 +55,8 @@ void dequeue(Node_t* node, List_t* list, Node_t ** hash)
         
         
         list->full_nodes--;
-        hash[node->data] = NULL;
+        ht_delete(node->data);
+        //hash[node->data] = NULL;
         free(node);
 }
 

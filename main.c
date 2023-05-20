@@ -24,6 +24,7 @@ int main()
     */
     List_t* list;
     Queue* queue;
+    HashTable *table = create_table();
 
     //scanning
     while(!scanf("%ld", &cache_size) || (cache_size <= 0)) {
@@ -79,6 +80,7 @@ int main()
         
 		count_LRU += lru(page, queue, hash_LRU);
         //count_RRIP += replacement_RRIP(page, list, hash_RRIP);
+        //count_RRIP += replacement_RRIP(page, list, table);
     }
 
     assert((count_LRU >= 0) && (count_RRIP >= 0) && "Something went wrong, code doesn't work correctly");  
