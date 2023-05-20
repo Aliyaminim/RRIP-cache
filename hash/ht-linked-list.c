@@ -1,3 +1,10 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+#include "../functions.h"
+#include "ht-linked-list.h"
+
+
 NodeHtLl* ht_ll_create () {
     NodeHtLl* list = (NodeHtLl*) malloc (sizeof(NodeHtLl));
     return list;
@@ -44,7 +51,7 @@ NodeHtLl* ht_ll_create () {
     list = node;
     HtElem* it = NULL;
     temp->elem = it;
-    free(temp->elem->data);
+    //free(temp->elem->data); is it okay to free long int variable?
     free(temp->elem->value);
     free(temp->elem);
     free(temp);
@@ -56,7 +63,7 @@ NodeHtLl* ht_ll_create () {
     while (list) {
         temp = list;
         list = list->next;
-        free(temp->elem->data);
+        //free(temp->elem->data); is it okay to free long int variable?
         free(temp->elem->value);
         free(temp->elem);
         free(temp);

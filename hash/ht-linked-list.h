@@ -1,5 +1,13 @@
 #pragma once
 
+
+typedef struct HtElem HtElem;
+
+struct HtElem {
+    long data;
+    Node_t *value;
+};
+
 typedef struct NodeHtLl NodeHtLl;
 
 struct NodeHtLl {

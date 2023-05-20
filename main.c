@@ -5,19 +5,19 @@
 #include <stdlib.h>
 #include <assert.h>
 #include "functions.h"
-#include "./src/lru.h"
+#include "./lru/lru.h"
 
 int main()
 {
     //FIXME:temporary code 
 	Node_t** hash_RRIP;
     QNode** hash_LRU;
-    long kol;
+    long hashsize; 
     //
 
-    long m, n, page, count_RRIP, count_LRU; 
-    /*  m is a cache size
-        n is an overall number of requests
+    long cache_size, num_req, page, count_RRIP, count_LRU; 
+    /* 
+        num_req is an overall number of requests
         page is a current request
         count_RRIP tracks a number of cache hits in RRIP replacement
         count_LRU tracks a number of cache hits in LRU replacement
@@ -26,45 +26,50 @@ int main()
     List_t* list;
     Queue* queue;
 
-    for(sc = scanf("%ld", &m); sc == 0 || ;)
-    while(!scanf("%ld", &m)) {
-        printf("Waiting for cache size(>0)\n");
+    while(!scanf("%ld", &cache_size) || (cache_size <= 0)) {
+        printf("Waiting for the cache size... It must be positive number\n");
     } 
 
-    while(!scanf("%ld", &n)) {
-        printf("Waiting for overall number of requests(>0)\n");
+    while(!scanf("%ld", &num_req) || (num_req <= 0)) {
+        printf("Waiting for the overall number of requests... It must be positive number\n");
     }
     
 
     //FIXME: temporary code
-    hash_RRIP = calloc(n + 1, sizeof(Node_t *));
-    assert(hash_RRIP != NULL);
-    hash_LRU = calloc(n + 1, sizeof(QNode *));
-    assert(hash_LRU != NULL);
-    kol = n + 1;
+    hash_RRIP = calloc(num_req + 1, sizeof(Node_t *));
+    hash_LRU = calloc(num_req + 1, sizeof(QNode *));
+   
+    if ((hash_RRIP == NULL) || (hash_LRU == NULL)) {
+        fprintf(stderr, "Memory exhausted\n");
+        abort();
+    }   
+    hashsize = num_req + 1;
     //
 
-    list = create_list(m);
-    queue = createQueue(m);
+    list = create_list(cache_size);
+    queue = createQueue(cache_size);
     count_LRU = 0;
     count_RRIP = 0;
 
     //work begins...
-    for (long i = 0; i < n; i++) 
+    for (long i = 0; i < num_req; i++) 
     {
         scanf("%ld", &page);
         
         //FIXME: temporarily we need to update hash each time
         if (kol - 1 < page) {
             hash_RRIP = (Node_t **) realloc(hash_RRIP, (page + 1) * sizeof(Node_t *));
-            assert(hash_RRIP != NULL);
             for (long i = kol; i <= page; i++)
                 hash_RRIP[i] = NULL;
 
             hash_LRU = (QNode **) realloc(hash_LRU, (page + 1) * sizeof(QNode* ));
-            assert(hash_LRU != NULL);
             for (long i = kol; i <= page; i++)
                 hash_LRU[i] = NULL;
+
+            if ((hash_RRIP == NULL) || (hash_LRU == NULL)) {
+                fprintf(stderr, "Memory exhausted(during realloc)\n");
+                abort();
+            }   
 
             kol = page + 1;
         }

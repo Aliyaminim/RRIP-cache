@@ -7,13 +7,6 @@ long hash_function(long data)
     return (data % modular);
 }
 
-typedef struct HtElem HtElem;
-
-struct HtElem {
-    long data;
-    Node_t *value;
-};
-
 typedef struct HashTable HashTable;
 
 struct HashTable {

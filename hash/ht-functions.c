@@ -1,5 +1,10 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+#include "../functions.h"
 #include "ht-linked-list.h"
 #include "ht-functions.h"
+
 
 NodeHtLl** create_overflow_list(HashTable* table) {
     NodeHtLl** buckets = (NodeHtLl**) calloc (modular, sizeof(NodeHtLl*));
@@ -57,7 +62,8 @@ void solve_collision(long index, HtElem* elem, HashTable* table) {
         return;
     }
     else {
-        table->overflow_list[index] = linkedlist_insert(head, elem);
+        //table->overflow_list[index] = linkedlist_insert(head, elem);
+        //table->overflow_list[index] = ht_ll_insert(head, elem);       choose right option please
         return;
     }
  }
@@ -76,7 +82,7 @@ void ht_insert(HashTable* table, long data, Node_t * value) {
     else {
             if (current_elem->data == data) {
                 table->elems[index]->value = value;
-				value = table->elems[index]->value
+				value = table->elems[index]->value;
                 return;
             }
     
