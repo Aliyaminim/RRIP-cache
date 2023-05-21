@@ -67,6 +67,7 @@ int main()
 		count_LRU += lru(page, queue, hash_LRU);
         count_RRIP += replacement_RRIP(page, list, table);
         count_check += replacement_RRIP1(page, list_check, hash_RRIP);
+        print_list(list);
     }
 
     assert((count_LRU >= 0) && (count_RRIP >= 0) && "Something went wrong, code doesn't work correctly");  

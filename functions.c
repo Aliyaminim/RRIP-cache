@@ -190,8 +190,10 @@ void print_list(const List_t * list)
 {
 	Node_t *head = list->head;
 
+	
+	printf("%ld ", list->fst_dist->data);
 	while (head != NULL) {
-		printf("%ld ", head->data);
+		printf("%ld(%d) ", head->data, head->value);
 		head = head->next;
 	}
 

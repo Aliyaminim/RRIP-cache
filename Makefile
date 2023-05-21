@@ -1,5 +1,5 @@
 program: main.o functions.o lru.o ht-linked-list.o ht-functions.o 
-	gcc -o program main.o functions.o lru.o ht-linked-list.o ht-functions.o 
+	gcc -g -O1 -o program main.o functions.o lru.o ht-linked-list.o ht-functions.o 
 
 main.o: main.c ./lru/lru.h functions.h ./hash/ht-functions.h
 	gcc -c main.c

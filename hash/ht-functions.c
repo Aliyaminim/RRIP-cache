@@ -27,7 +27,6 @@ void free_overflow_list(HashTable * table)
 	free(buckets);
 }
 
-
 HtElem *create_elem(long data, Node_t * value)
 {
 	HtElem *elem = (HtElem *) malloc(sizeof(HtElem));
