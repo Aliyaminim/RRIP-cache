@@ -8,8 +8,6 @@
 #include "functions.h"
 #include "./hash/ht-functions.h"
 
-
-
 int main()
 {
     Node_t **hash_RRIP;
@@ -63,10 +61,6 @@ int main()
                 ("Waiting for your request... It must be positive number\n");
         }
 
-        // if (hashsize - 1 < page) {
-        //     update_hash(&hashsize, page, hash_RRIP, hash_LRU);
-        // }
-
         if (hashsize - 1 < page) {
             //update_hash(&hashsize, page, hash_RRIP, hash_LRU);
            
@@ -83,22 +77,17 @@ int main()
                 abort();
             }   
 
-            hashsize = page + 1;
-        
+            hashsize = page + 1;      
         }
-
-             
+            
 		count_LRU += lru(page, queue, hash_LRU);
         count_RRIP += replacement_RRIP(page, list, table);
-        count_check += replacement_RRIP1(page, list_check, hash_RRIP);
-        //print_list(list);
-        //printf("Пришла нода: %ld", page);
-
+        count_check += replacement_RRIP_cop(page, list_check, hash_RRIP);
     }
 
-    /*assert((count_LRU >= 0) && (count_RRIP >= 0)
+    assert((count_LRU >= 0) && (count_RRIP >= 0)
            && (count_check == count_RRIP)
-           && "Something went wrong, code doesn't work correctly");*/
+           && "Something went wrong, code doesn't work correctly");
 
     printf("Number of cache hits:\nfor RRIP %ld (%ld)\nfor LRU %ld\n",
            count_RRIP, count_check, count_LRU);

@@ -21,7 +21,9 @@ List_t *create_list(const long size)
 	return list;
 }
 
-Node_t *newNode(const long data)
+/* A utility function to create a new List Node.
+   The list Node will store the given 'data' */
+static Node_t *newNode(const long data)
 {
 	Node_t *res = calloc(1, sizeof(Node_t));
 	res->next = res->prev = NULL;
@@ -31,12 +33,14 @@ Node_t *newNode(const long data)
 	return res;
 }
 
-int isListEmpty(const List_t * list)
+/* A utility function to check if List is empty */
+static int isListEmpty(const List_t * list)
 {
 	return list->tail == NULL;
 }
 
-int isListFull(const List_t * list)
+/* A utility function to check if there is slot available in memory */
+static int isListFull(const List_t * list)
 {
 	return list->size == list->full_nodes;
 }
@@ -58,7 +62,6 @@ void dequeue(Node_t * node, List_t * list, HashTable * table)
 
 	list->full_nodes--;
 	ht_delete(table, node->data);
-	//hash[node->data] = NULL;
 	free(node);
 }
 
@@ -99,7 +102,6 @@ void enqueue(List_t * list, HashTable * table, const long data)
 
 		list->full_nodes++;
 		ht_insert(table, data, curnode);
-		//hash[data] = curnode;
 	} else {
 		if (isListEmpty(list)) {
 			list->head = curnode;
@@ -110,7 +112,6 @@ void enqueue(List_t * list, HashTable * table, const long data)
 		list->tail = curnode;
 		list->full_nodes++;
 		ht_insert(table, data, curnode);
-		//hash[data] = curnode;
 	}
 
 }
@@ -163,6 +164,94 @@ int replacement_RRIP(long page, List_t * list, HashTable * table)
 	}
 }
 
+void dequeue_cop(Node_t * node, List_t * list, Node_t ** hash)
+{
+	list->fst_dist = node->next;
+
+	if (node != list->head)
+		node->prev->next = node->next;
+	else
+		list->head = node->next;
+
+	if (node != list->tail)
+		node->next->prev = node->prev;
+	else
+		list->tail = node->prev;
+
+
+	list->full_nodes--;
+	hash[node->data] = NULL;
+	free(node);
+}
+
+void enqueue_cop(List_t * list, Node_t ** hash, const long data)
+{
+	Node_t *curnode = newNode(data);
+
+	if (isListFull(list)) {
+		if (list->fst_dist == NULL) {
+			int i = 3 - list->tail->value;
+			Node_t *tmp = list->head;
+
+			for (; tmp != NULL;) {
+				tmp->value += i;
+				if ((tmp->value == 3) && (list->fst_dist == NULL)) {
+					list->fst_dist = tmp;
+				}
+				tmp = tmp->next;
+			}
+		}
+
+		Node_t *hlp = list->fst_dist->prev;
+		dequeue_cop(list->fst_dist, list, hash);
+
+		if (hlp != NULL) {
+			if (hlp != list->tail)
+				hlp->next->prev = curnode;
+			else
+				list->tail = curnode;
+			hlp->next = curnode;
+		} else {
+			list->head->prev = curnode;
+			list->head = curnode;
+		}
+
+		curnode->next = list->fst_dist;
+		curnode->prev = hlp;
+
+		list->full_nodes++;
+		hash[data] = curnode;
+	} else {
+		if (isListEmpty(list)) {
+			list->head = curnode;
+		} else {
+			list->tail->next = curnode;
+			curnode->prev = list->tail;
+		}
+		list->tail = curnode;
+		list->full_nodes++;
+		hash[data] = curnode;
+	}
+
+}
+
+int replacement_RRIP_cop(long page, List_t* list,  Node_t ** hash)
+{       
+        Node_t* node = NULL;
+
+        if (node = hash[page]) // Change arguments
+        {
+                cache_hit(node, list);
+                return 1;
+        }
+
+        else
+        {
+                enqueue_cop(list, hash, page);
+                return 0;
+        }
+}
+
 void print_list(const List_t * list)
 {
 	Node_t *head = list->head;
@@ -202,94 +291,6 @@ void delete_hashRRIP(Node_t** hash_RRIP)
 	}
 
 	free(hash_RRIP);
-}
-
-void dequeue1(Node_t * node, List_t * list, Node_t ** hash)
-{
-	list->fst_dist = node->next;
-
-	if (node != list->head)
-		node->prev->next = node->next;
-	else
-		list->head = node->next;
-
-	if (node != list->tail)
-		node->next->prev = node->prev;
-	else
-		list->tail = node->prev;
-
-
-	list->full_nodes--;
-	hash[node->data] = NULL;
-	free(node);
-}
-
-void enqueue1(List_t * list, Node_t ** hash, const long data)
-{
-	Node_t *curnode = newNode(data);
-
-	if (isListFull(list)) {
-		if (list->fst_dist == NULL) {
-			int i = 3 - list->tail->value;
-			Node_t *tmp = list->head;
-
-			for (; tmp != NULL;) {
-				tmp->value += i;
-				if ((tmp->value == 3) && (list->fst_dist == NULL)) {
-					list->fst_dist = tmp;
-				}
-				tmp = tmp->next;
-			}
-		}
-
-		Node_t *hlp = list->fst_dist->prev;
-		dequeue1(list->fst_dist, list, hash);
-
-		if (hlp != NULL) {
-			if (hlp != list->tail)
-				hlp->next->prev = curnode;
-			else
-				list->tail = curnode;
-			hlp->next = curnode;
-		} else {
-			list->head->prev = curnode;
-			list->head = curnode;
-		}
-
-		curnode->next = list->fst_dist;
-		curnode->prev = hlp;
-
-		list->full_nodes++;
-		hash[data] = curnode;
-	} else {
-		if (isListEmpty(list)) {
-			list->head = curnode;
-		} else {
-			list->tail->next = curnode;
-			curnode->prev = list->tail;
-		}
-		list->tail = curnode;
-		list->full_nodes++;
-		hash[data] = curnode;
-	}
-
-}
-
-int replacement_RRIP1(long page, List_t* list,  Node_t ** hash)
-{       
-        Node_t* node = NULL;
-
-        if (node = hash[page]) // Change arguments
-        {
-                cache_hit(node, list);
-                return 1;
-        }
-
-        else
-        {
-                enqueue1(list, hash, page);
-                return 0;
-        }
 }
 
 void update_hash(long* phashsize, long page, Node_t** hash_RRIP, QNode** hash_LRU) {
