@@ -1,7 +1,7 @@
 #pragma once
 
 //dimension of hash table, that's prime number
-static const long modular = 100019;
+static const long modular = 1000019;
 
 //simple hash_function, takes long integer data, returns hash of data
 long hash_function(long data);
