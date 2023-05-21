@@ -5,10 +5,10 @@ n = int(input("Input number of requests: "))
 list = []
 
 for i in range(n):
-        list.append(random.randint(1, size + 200000))
+        list.append(random.randint(1, 3*size))
 
 list_str = [str(i) for i in list]
 
-with open("random_test3.in", "w") as f:
+with open("random_test5.in", "w") as f:
     f.write(str(size) + " " + str(n) + " ")
     f.write(" ".join(list_str))

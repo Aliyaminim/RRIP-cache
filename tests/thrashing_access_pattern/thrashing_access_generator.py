@@ -1,8 +1,8 @@
 import random
 
 size = int(input("Input cache size: "))
-k = int(input("Input length of working set(less than cache size): "))
-N = int(input("Input number of burst repeats: "))
+k = int(input("Input length of working set(k, greater than cache size): "))
+N = int(input("Input number of burst repeats(N): "))
 list = []
 
 for i in range(N):
@@ -11,11 +11,7 @@ for i in range(N):
 
 list_str = [str(i) for i in list]
 
-<<<<<<< HEAD
-with open("ta_test6.in", "w") as f:
-=======
-with open("ta_test.in", "w") as f:
->>>>>>> parent of 8cded9a (Tests are done)
+with open("ta_test5.in", "w") as f:
     f.write(str(size) + " " + str(k*N) + " ")
     f.write(" ".join(list_str))
 
