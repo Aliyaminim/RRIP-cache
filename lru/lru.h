@@ -22,3 +22,7 @@ int isQueueFull(Queue * queue);
 int del_qnode(Queue * queue, QNode ** hash);
 
 int lru(long page, Queue * queue, QNode ** hash);
+
+void delete_hashLRU(QNode** hash_LRU);
+
+void delete_queue(Queue * queue);

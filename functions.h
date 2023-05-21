@@ -96,3 +96,5 @@ void enqueue1(List_t * list, Node_t ** hash, const long data);
 int replacement_RRIP1(const long page, List_t * list, Node_t ** hash);
 
 void update_hash(long *phashsize, long page, Node_t** hash_RRIP, QNode** hash_LRU);
+
+void delete_hashRRIP(Node_t** hash_RRIP);

@@ -91,3 +91,32 @@ int lru(long page, Queue * queue, QNode ** hash)
 		return 1;
 	}
 }
+
+void delete_hashLRU(QNode** hash_LRU)
+{
+	QNode* next;
+	QNode* top = hash_LRU[0];
+
+	while (top != NULL) {
+		next = top->next;
+		free(top);
+		top = next;
+	}
+}
+
+void delete_queue(Queue * queue)
+{
+	QNode *next;
+	QNode *top = queue->top;
+
+	while (top != NULL) {
+		next = top->next;
+		free(top);
+		top = next;
+	}
+
+	free(queue);
+}
+
+
+
