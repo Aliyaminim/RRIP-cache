@@ -71,7 +71,6 @@ void solve_collision(long index, HtElem * elem, HashTable * table)
 		table->overflow_list[index] = head;
 		return;
 	} else {
-		//table->overflow_list[index] = linkedlist_insert(head, elem);
 		table->overflow_list[index] = ht_ll_insert(head, elem);
 		return;
 	}
@@ -122,27 +121,21 @@ Node_t *ht_search(HashTable * table, long data)
 
 void ht_delete(HashTable * table, long data)
 {
-	// Deletes an elem from the table
 	int index = hash_function(data);
 	HtElem *elem = table->elems[index];
 	NodeHtLl *head = table->overflow_list[index];
 
 	if (elem == NULL) {
-		// Does not exist. Return
 		return;
 	} else {
 		if (head == NULL && elem->data == data) {
-			// No collision chain. Remove the elem
-			// and set table index to NULL
+			//No collision chain
 			table->elems[index] = NULL;
 			free(elem);
 			return;
 		} else if (head != NULL) {
-			// Collision Chain exists
+			//There is a collision chain
 			if (elem->data == data) {
-				// Remove this elem and set the head of the list
-				// as the new elem
-
 				free(elem);
 				NodeHtLl *node = head;
 				head = head->next;
@@ -160,12 +153,12 @@ void ht_delete(HashTable * table, long data)
 			while (curr) {
 				if (curr->elem->data == data) {
 					if (prev == NULL) {
-						// First element of the chain. Remove the chain
+						//First element of the chain. Remove the chain
 						ht_ll_free(head);
 						table->overflow_list[index] = NULL;
 						return;
 					} else {
-						// This is somewhere in the chain
+						//Somewhere in the chain
 						prev->next = curr->next;
 						curr->next = NULL;
 						ht_ll_free(curr);
