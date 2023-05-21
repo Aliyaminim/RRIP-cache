@@ -14,17 +14,21 @@ long hash_function(long data)
 
 NodeHtLl **create_overflow_list(HashTable * table)
 {
-	NodeHtLl **buckets = (NodeHtLl **) calloc(modular, sizeof(NodeHtLl *));
-	assert(buckets != NULL);
+	assert(table != NULL);
 
-	//memset(buckets, '\0', modular * sizeof(NodeHtLl*));
-	//for (int i = 0; i < modular; ++i)
-	//	buckets[i] = NULL;
+	NodeHtLl **buckets = (NodeHtLl **) calloc(modular, sizeof(NodeHtLl *));
+	if (buckets == NULL) {
+        fprintf(stderr, "Memory exhausted\n");
+        abort();
+    }
+
 	return buckets;
 }
 
 void free_overflow_list(HashTable * table)
 {
+	assert(table != NULL);
+
 	NodeHtLl **buckets = table->overflow_list;
 	for (int i = 0; i < modular; ++i)
 		ht_ll_free(buckets[i]);
@@ -33,8 +37,13 @@ void free_overflow_list(HashTable * table)
 
 HtElem *create_elem(long data, Node_t * value)
 {
-	HtElem *elem = (HtElem *) malloc(sizeof(HtElem));
 	assert(elem != NULL);
+
+	HtElem *elem = (HtElem *) malloc(sizeof(HtElem));
+	if (elem == NULL) {
+        fprintf(stderr, "Memory exhausted\n");
+        abort();
+    }
 	elem->data = data;
 	elem->value = value;
 
@@ -45,12 +54,11 @@ HashTable *create_table()
 {
 	HashTable *table = (HashTable *) malloc(sizeof(HashTable));
 	table->elems = (HtElem **) calloc(modular, sizeof(HtElem *));
-	assert(table != NULL);
-	assert(table->elems != NULL);
 
-	//memset(table->elems, '\0', modular * sizeof(HtElem *));
-	//for (int i = 0; i < modular; ++i)
-	//	table->elems[i] = NULL;
+	if (queue == NULL || table->elems == NULL) {
+        fprintf(stderr, "Memory exhausted\n");
+        abort();
+    }
 	table->overflow_list = create_overflow_list(table);
 
 	return table;
@@ -58,6 +66,8 @@ HashTable *create_table()
 
 void free_table(HashTable * table)
 {
+	assert(table != NULL);
+
 	for (int i = 0; i < modular; ++i) {
 		HtElem *elem = table->elems[i];
 		free(elem);
@@ -70,6 +80,9 @@ void free_table(HashTable * table)
 
 void solve_collision(long index, HtElem * elem, HashTable * table)
 {
+	assert(elem != NULL);
+	assert(table != NULL);
+
 	NodeHtLl *head = table->overflow_list[index];
 
 	if (head == NULL) {
@@ -85,6 +98,9 @@ void solve_collision(long index, HtElem * elem, HashTable * table)
 
 void ht_insert(HashTable * table, long data, Node_t * value)
 {
+	assert(table != NULL);
+	assert(value != NULL);
+
 	HtElem *elem = create_elem(data, value);
 
 	unsigned long index = hash_function(data);
@@ -111,9 +127,13 @@ void ht_insert(HashTable * table, long data, Node_t * value)
 
 Node_t *ht_search(HashTable * table, long data)
 {
+	assert(table != NULL);
+
 	int index = hash_function(data);
 	HtElem *elem = table->elems[index];
 	NodeHtLl *head = table->overflow_list[index];
+
+	
 
 	while (elem != NULL) {
 		if (elem->data == data)
@@ -128,6 +148,8 @@ Node_t *ht_search(HashTable * table, long data)
 
 void ht_delete(HashTable * table, long data)
 {
+	assert(table != NULL);
+
 	int index = hash_function(data);
 	HtElem *elem = table->elems[index];
 	NodeHtLl *head = table->overflow_list[index];

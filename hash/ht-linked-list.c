@@ -9,12 +9,17 @@
 NodeHtLl *ht_ll_create()
 {
 	NodeHtLl *list = (NodeHtLl *) malloc(sizeof(NodeHtLl));
-    	assert(list != NULL);
+    if (list == NULL) {
+        fprintf(stderr, "Memory exhausted\n");
+        abort();
+    }
 	return list;
 }
 
 NodeHtLl *ht_ll_insert(NodeHtLl * list, HtElem * elem)
 {
+    assert(elem != NULL);
+
 	if (!list) {
 		NodeHtLl *head = ht_ll_create();
 		head->elem = elem;
