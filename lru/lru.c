@@ -61,7 +61,7 @@ void add_qnode(Queue * queue, long page, QNode ** hash)
 int del_qnode(Queue * queue, QNode ** hash)
 {
 	assert((queue != NULL) && (hash != NULL));
-	
+
 	QNode *tmp = queue->end;
 	hash[queue->end->page] = NULL;
 	if (queue->full_cell == 1) {
@@ -78,6 +78,8 @@ int del_qnode(Queue * queue, QNode ** hash)
 
 int lru(long page, Queue * queue, QNode ** hash)
 {
+	assert((queue != NULL) && (hash != NULL));
+
 	QNode *tmp = hash[page]; 
 
 	if (isQueueEmpty(queue)) {
@@ -100,9 +102,11 @@ int lru(long page, Queue * queue, QNode ** hash)
 
 		else
 			queue->end = tmp->prev;
+
 		assert(tmp == hash[page]);
 		hash[page] = NULL;
 		free(tmp);
+
 		queue->full_cell -= 1;
 		add_qnode(queue, page, hash);
 		return 1;
@@ -111,6 +115,8 @@ int lru(long page, Queue * queue, QNode ** hash)
 
 void delete_hashLRU(QNode** hash_LRU)
 {
+	assert(hash_LRU != NULL);
+
 	QNode* next;
 	QNode* top = hash_LRU[0];
 
@@ -125,6 +131,8 @@ void delete_hashLRU(QNode** hash_LRU)
 
 void delete_queue(Queue * queue)
 {
+	assert(queue != NULL);
+	
 	QNode *next;
 	QNode *top = queue->top;
 
