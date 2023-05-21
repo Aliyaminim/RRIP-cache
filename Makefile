@@ -25,7 +25,6 @@ test:
 
 clean: 
 	rm *.o program
-	rm *.c~ program
 	
 
 

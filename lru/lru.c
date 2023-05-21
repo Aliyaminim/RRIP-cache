@@ -62,7 +62,9 @@ int del_qnode(Queue * queue, QNode ** hash)
 
 int lru(long page, Queue * queue, QNode ** hash)
 {
-	QNode *tmp = hash[page];
+	//printf("%ld\n", page);
+	//printf("%#x\n", hash + page);
+	QNode *tmp = hash[page]; //ALIYA FIXME!!!
 	if (isQueueEmpty(queue)) {
 		add_qnode(queue, page, hash);
 		return 0;
@@ -102,6 +104,8 @@ void delete_hashLRU(QNode** hash_LRU)
 		free(top);
 		top = next;
 	}
+
+	free(hash_LRU);
 }
 
 void delete_queue(Queue * queue)

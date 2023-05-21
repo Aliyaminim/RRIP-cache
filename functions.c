@@ -43,7 +43,6 @@ int isListFull(const List_t * list)
 	return list->size == list->full_nodes;
 }
 
-
 void dequeue(Node_t * node, List_t * list, HashTable * table)
 {
 	list->fst_dist = node->next;
@@ -150,12 +149,11 @@ void cache_hit(Node_t * node, List_t * list)
 	return;
 }
 
-
 int replacement_RRIP(long page, List_t * list, HashTable * table)
 {
 	Node_t *node = NULL;
 
-	if (node = ht_search(table, page))	// Change arguments
+	if (node = ht_search(table, page))
 	{
 		cache_hit(node, list);
 		return 1;
@@ -166,25 +164,6 @@ int replacement_RRIP(long page, List_t * list, HashTable * table)
 		return 0;
 	}
 }
-
-
-//FIXME
-/*int replacement_RRIP(long page, List_t* list, Node_t** hash)
-  {       
-  Node_t* node = NULL;
-
-  if (node = is_element_in_ht(page)) // Change arguments
-  {
-  cache_hit(node, list);
-  return 1;
-  }
-
-  else
-  {
-  enqueue(list, hash, page);
-  return 0;
-  }
-  }*/
 
 void print_list(const List_t * list)
 {
@@ -213,7 +192,6 @@ void delete_list(List_t * list)
 	free(list);
 }
 
-
 void delete_hashRRIP(Node_t** hash_RRIP)
 {
 	Node_t* next;
@@ -224,10 +202,9 @@ void delete_hashRRIP(Node_t** hash_RRIP)
 		free(top);
 		top = next;
 	}
+
+	free(hash_RRIP);
 }
-
-
-
 
 void dequeue1(Node_t * node, List_t * list, Node_t ** hash)
 {
