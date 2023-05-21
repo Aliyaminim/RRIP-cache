@@ -1,10 +1,10 @@
 import random
 
 size = int(input("Input cache size: "))
-k = int(input("Input length of working set(less than cache size): "))
-N = int(input("Input number of burst repeats: "))
-A = int(input("Input number of working set repeats: "))
-m = int(input("Input length of random set: "))
+k = int(input("Input length of working set(k, less than cache size): "))
+N = int(input("Input number of burst repeats(N): "))
+A = int(input("Input number of working set repeats(A): "))
+m = int(input("Input length of random set(m, greater than cach size: "))
 list = []
 
 for i in range(N):
@@ -19,7 +19,7 @@ for i in range(N):
 
 list_str = [str(i) for i in list]
 
-with open("ma1_test.in", "w") as f:
+with open("ma1_test6.in", "w") as f:
     f.write(str(size) + " " + str((2*k*A + m)*N) + " ")
     f.write(" ".join(list_str))
 

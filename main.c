@@ -63,6 +63,10 @@ int main()
                 ("Waiting for your request... It must be positive number\n");
         }
 
+        // if (hashsize - 1 < page) {
+        //     update_hash(&hashsize, page, hash_RRIP, hash_LRU);
+        // }
+
         if (hashsize - 1 < page) {
             //update_hash(&hashsize, page, hash_RRIP, hash_LRU);
            
@@ -83,9 +87,13 @@ int main()
         
         }
 
-        //count_LRU += lru(page, queue, hash_LRU);
-        //count_RRIP += replacement_RRIP(page, list, table);
+             
+		count_LRU += lru(page, queue, hash_LRU);
+        count_RRIP += replacement_RRIP(page, list, table);
         count_check += replacement_RRIP1(page, list_check, hash_RRIP);
+        //print_list(list);
+        //printf("Пришла нода: %ld", page);
+
     }
 
     /*assert((count_LRU >= 0) && (count_RRIP >= 0)
