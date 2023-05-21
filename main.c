@@ -63,13 +63,36 @@ int main()
                 ("Waiting for your request... It must be positive number\n");
         }
 
-        if (hashsize - 1 < page) {
-            update_hash(&hashsize, page, hash_RRIP, hash_LRU);
-        }
+        // if (hashsize - 1 < page) {
+        //     update_hash(&hashsize, page, hash_RRIP, hash_LRU);
+        // }
 
-        count_LRU += lru(page, queue, hash_LRU);
+        if (hashsize - 1 < page) {
+            //update_hash(&hashsize, page, hash_RRIP, hash_LRU);
+           
+            hash_RRIP = (Node_t **) realloc(hash_RRIP, (page + 1) * sizeof(Node_t *));
+            for (long i = hashsize; i <= page; i++)
+                hash_RRIP[i] = NULL;
+
+            hash_LRU = (QNode **) realloc(hash_LRU, (page + 1) * sizeof(QNode* ));
+            for (long i = hashsize; i <= page; i++)
+                hash_LRU[i] = NULL;
+
+            if ((hash_RRIP == NULL) || (hash_LRU == NULL)) {
+                fprintf(stderr, "Memory exhausted(during realloc)\n");
+                abort();
+            }   
+
+            hashsize = page + 1;
+        
+        }
+             
+		count_LRU += lru(page, queue, hash_LRU);
         count_RRIP += replacement_RRIP(page, list, table);
         count_check += replacement_RRIP1(page, list_check, hash_RRIP);
+        //print_list(list);
+        //printf("Пришла нода: %ld", page);
+
     }
 
     assert((count_LRU >= 0) && (count_RRIP >= 0)

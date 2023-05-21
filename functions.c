@@ -9,8 +9,6 @@
 #include "./hash/ht-linked-list.h"
 #include "./hash/ht-functions.h"
 
-
-
 List_t *create_list(const long size)
 {
 	List_t *list = calloc(1, sizeof(List_t));
@@ -119,9 +117,6 @@ void enqueue(List_t * list, HashTable * table, const long data)
 
 void cache_hit(Node_t * node, List_t * list)
 {
-	if (list->fst_dist == node)
-		list->fst_dist = node->next;
-
 	if (list->head == node) {
 		list->head->value = 0;
 		return;
@@ -137,6 +132,9 @@ void cache_hit(Node_t * node, List_t * list)
 		node->value = 0;
 		return;
 	}
+
+	if (list->fst_dist == node)
+		list->fst_dist = node->next;
 
 	node->next->prev = node->prev;
 	node->prev->next = node->next;
@@ -170,7 +168,7 @@ void print_list(const List_t * list)
 	Node_t *head = list->head;
 
 	while (head != NULL) {
-		printf("%ld ", head->data);
+		printf("%ld(%d) ", head->data, head->value);
 		head = head->next;
 	}
 

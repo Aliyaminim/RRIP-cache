@@ -67,7 +67,6 @@ void ht_ll_free(NodeHtLl * list)
 	while (list) {
 		temp = list;
 		list = list->next;
-		free(temp->elem->value);
 		free(temp->elem);
 		free(temp);
 	}
