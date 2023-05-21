@@ -9,6 +9,7 @@
 NodeHtLl *ht_ll_create()
 {
 	NodeHtLl *list = (NodeHtLl *) malloc(sizeof(NodeHtLl));
+    assert(list != NULL);
 	return list;
 }
 

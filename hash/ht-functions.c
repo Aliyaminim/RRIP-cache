@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <string.h>
 #include "../lru/lru.h"
 #include "../functions.h"
 #include "ht-linked-list.h"
@@ -14,8 +15,11 @@ long hash_function(long data)
 NodeHtLl **create_overflow_list(HashTable * table)
 {
 	NodeHtLl **buckets = (NodeHtLl **) calloc(modular, sizeof(NodeHtLl *));
-	for (int i = 0; i < modular; ++i)
-		buckets[i] = NULL;
+	assert(buckets != NULL);
+
+	//memset(buckets, '\0', modular * sizeof(NodeHtLl*));
+	//for (int i = 0; i < modular; ++i)
+	//	buckets[i] = NULL;
 	return buckets;
 }
 
@@ -30,7 +34,7 @@ void free_overflow_list(HashTable * table)
 HtElem *create_elem(long data, Node_t * value)
 {
 	HtElem *elem = (HtElem *) malloc(sizeof(HtElem));
-
+	assert(elem != NULL);
 	elem->data = data;
 	elem->value = value;
 
@@ -41,8 +45,12 @@ HashTable *create_table()
 {
 	HashTable *table = (HashTable *) malloc(sizeof(HashTable));
 	table->elems = (HtElem **) calloc(modular, sizeof(HtElem *));
-	for (int i = 0; i < modular; ++i)
-		table->elems[i] = NULL;
+	assert(table != NULL);
+	assert(table->elems != NULL);
+
+	//memset(table->elems, '\0', modular * sizeof(HtElem *));
+	//for (int i = 0; i < modular; ++i)
+	//	table->elems[i] = NULL;
 	table->overflow_list = create_overflow_list(table);
 
 	return table;
@@ -52,8 +60,7 @@ void free_table(HashTable * table)
 {
 	for (int i = 0; i < modular; ++i) {
 		HtElem *elem = table->elems[i];
-		if (elem != NULL)
-			free(elem);
+		free(elem);
 	}
 
 	free_overflow_list(table);

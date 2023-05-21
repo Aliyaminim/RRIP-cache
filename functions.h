@@ -27,20 +27,29 @@ typedef struct list_t {
     long full_nodes;		//number of filled Nodes in List
 } List_t;
 
-typedef struct HtElem {
+//implementation of hash table element structure, contatins long integer data (could be page number) and Node_t chain pointer value
+typedef struct HtElem HtElem;
+
+struct HtElem {
     long data;
-    struct Node_t *value;
-} HtElem;
+    Node_t *value;
+};
 
-typedef struct NodeHtLl {
+//implementation of Node Hash table Linked list, contains hash table element pointer of element and Node Hash table Linked list pointer to next element
+typedef struct NodeHtLl NodeHtLl;
+
+struct NodeHtLl {
     HtElem *elem;
-    struct NodeHtLl *next;
-} NodeHtLl;
+    NodeHtLl *next;
+};
 
-typedef struct HashTable {
+//implementation of hash table, contains the pointer to array of HtElem pointers and pointer to array of Node Hash table Linked list pointers
+typedef struct HashTable HashTable;
+
+struct HashTable {
     HtElem **elems;
     NodeHtLl **overflow_list;
-} HashTable;
+};
 
 /* A utility function to create an empty List.
    The list can have at most 'size' nodes */
