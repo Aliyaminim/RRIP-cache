@@ -7,12 +7,12 @@
 #include "ht-linked-list.h"
 #include "ht-functions.h"
 
-long hash_function(long data)
+long hash_function(const long data)
 {
 	return (data % modular);
 }
 
-NodeHtLl **create_overflow_list(HashTable * table)
+NodeHtLl **create_overflow_list(const HashTable * table)
 {
 	assert(table != NULL);
 
@@ -25,7 +25,7 @@ NodeHtLl **create_overflow_list(HashTable * table)
 	return buckets;
 }
 
-void free_overflow_list(HashTable * table)
+void free_overflow_list(const HashTable * table)
 {
 	assert(table != NULL);
 
@@ -35,10 +35,8 @@ void free_overflow_list(HashTable * table)
 	free(buckets);
 }
 
-HtElem *create_elem(long data, Node_t * value)
+HtElem *create_elem(const long data, Node_t * value)
 {
-	assert(value != NULL);
-
 	HtElem *elem = (HtElem *) malloc(sizeof(HtElem));
 	if (elem == NULL) {
         fprintf(stderr, "Memory exhausted\n");
@@ -78,7 +76,7 @@ void free_table(HashTable * table)
 	free(table);
 }
 
-void solve_collision(long index, HtElem * elem, HashTable * table)
+void solve_collision(const long index, HtElem * elem, HashTable * table)
 {
 	assert(elem != NULL);
 	assert(table != NULL);
@@ -96,7 +94,7 @@ void solve_collision(long index, HtElem * elem, HashTable * table)
 	}
 }
 
-void ht_insert(HashTable * table, long data, Node_t * value)
+void ht_insert(HashTable * table, const long data, Node_t * value)
 {
 	assert(table != NULL);
 	assert(value != NULL);
@@ -125,7 +123,7 @@ void ht_insert(HashTable * table, long data, Node_t * value)
 	}
 }
 
-Node_t *ht_search(HashTable * table, long data)
+Node_t *ht_search(HashTable * table, const long data)
 {
 	assert(table != NULL);
 
@@ -146,7 +144,7 @@ Node_t *ht_search(HashTable * table, long data)
 	return NULL;
 }
 
-void ht_delete(HashTable * table, long data)
+void ht_delete(HashTable * table, const long data)
 {
 	assert(table != NULL);
 
