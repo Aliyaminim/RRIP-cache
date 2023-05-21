@@ -37,7 +37,7 @@ void free_overflow_list(HashTable * table)
 
 HtElem *create_elem(long data, Node_t * value)
 {
-	assert(elem != NULL);
+	assert(value != NULL);
 
 	HtElem *elem = (HtElem *) malloc(sizeof(HtElem));
 	if (elem == NULL) {
@@ -55,7 +55,7 @@ HashTable *create_table()
 	HashTable *table = (HashTable *) malloc(sizeof(HashTable));
 	table->elems = (HtElem **) calloc(modular, sizeof(HtElem *));
 
-	if (queue == NULL || table->elems == NULL) {
+	if (table == NULL || table->elems == NULL) {
         fprintf(stderr, "Memory exhausted\n");
         abort();
     }
