@@ -13,11 +13,7 @@ typedef struct Queue {
 
 Queue *createQueue(long m);
 
-int isQueueEmpty(Queue * queue);
-
 void add_qnode(Queue * queue, long page, QNode ** hash);
-
-int isQueueFull(Queue * queue);
 
 int del_qnode(Queue * queue, QNode ** hash);
 

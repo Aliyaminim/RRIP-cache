@@ -7,24 +7,43 @@
 #include <stdlib.h>
 #include <assert.h>
 #include "lru.h"
+
 Queue *createQueue(long m)
 {
 	Queue *queue = (Queue *) calloc(1, sizeof(Queue));
+	if (queue == NULL) {
+        fprintf(stderr, "Memory exhausted\n");
+        abort();
+    }
+
 	queue->max_cell = m;
 	queue->full_cell = 0;
 	queue->top = queue->end = NULL;
 	return queue;
 }
 
-int isQueueEmpty(Queue * queue)
+static int isQueueEmpty(Queue * queue)
 {
+	assert((queue != NULL) && "Code doesn't work correctly");
 	return queue->end == NULL;
+}
+
+static int isQueueFull(Queue * queue)
+{
+	assert((queue != NULL) && "Code doesn't work correctly");
+	return queue->max_cell == queue->full_cell;
 }
 
 void add_qnode(Queue * queue, long page, QNode ** hash)
 {
+	assert((queue->full_cell <= queue->max_cell) && (queue != NULL) && (hash != NULL));
+
 	QNode *tmp = (QNode *) calloc(1, sizeof(QNode));
-	assert(queue->full_cell <= queue->max_cell);
+	if (tmp == NULL) {
+        fprintf(stderr, "Memory exhausted\n");
+        abort();
+    }
+
 	tmp->page = page;
 	tmp->prev = NULL;
 	tmp->next = queue->top;
@@ -39,13 +58,10 @@ void add_qnode(Queue * queue, long page, QNode ** hash)
 	hash[page] = tmp;
 }
 
-int isQueueFull(Queue * queue)
-{
-	return queue->max_cell == queue->full_cell;
-}
-
 int del_qnode(Queue * queue, QNode ** hash)
 {
+	assert((queue != NULL) && (hash != NULL));
+	
 	QNode *tmp = queue->end;
 	hash[queue->end->page] = NULL;
 	if (queue->full_cell == 1) {
@@ -62,9 +78,8 @@ int del_qnode(Queue * queue, QNode ** hash)
 
 int lru(long page, Queue * queue, QNode ** hash)
 {
-	//printf("%ld\n", page);
-	//printf("%#x\n", hash + page);
-	QNode *tmp = hash[page]; //ALIYA FIXME!!!
+	QNode *tmp = hash[page]; 
+
 	if (isQueueEmpty(queue)) {
 		add_qnode(queue, page, hash);
 		return 0;
