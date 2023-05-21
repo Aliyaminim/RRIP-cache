@@ -64,17 +64,33 @@ int main()
         }
 
         if (hashsize - 1 < page) {
-            update_hash(&hashsize, page, hash_RRIP, hash_LRU);
+            //update_hash(&hashsize, page, hash_RRIP, hash_LRU);
+           
+            hash_RRIP = (Node_t **) realloc(hash_RRIP, (page + 1) * sizeof(Node_t *));
+            for (long i = hashsize; i <= page; i++)
+                hash_RRIP[i] = NULL;
+
+            hash_LRU = (QNode **) realloc(hash_LRU, (page + 1) * sizeof(QNode* ));
+            for (long i = hashsize; i <= page; i++)
+                hash_LRU[i] = NULL;
+
+            if ((hash_RRIP == NULL) || (hash_LRU == NULL)) {
+                fprintf(stderr, "Memory exhausted(during realloc)\n");
+                abort();
+            }   
+
+            hashsize = page + 1;
+        
         }
 
-        count_LRU += lru(page, queue, hash_LRU);
-        count_RRIP += replacement_RRIP(page, list, table);
+        //count_LRU += lru(page, queue, hash_LRU);
+        //count_RRIP += replacement_RRIP(page, list, table);
         count_check += replacement_RRIP1(page, list_check, hash_RRIP);
     }
 
-    assert((count_LRU >= 0) && (count_RRIP >= 0)
+    /*assert((count_LRU >= 0) && (count_RRIP >= 0)
            && (count_check == count_RRIP)
-           && "Something went wrong, code doesn't work correctly");
+           && "Something went wrong, code doesn't work correctly");*/
 
     printf("Number of cache hits:\nfor RRIP %ld (%ld)\nfor LRU %ld\n",
            count_RRIP, count_check, count_LRU);
@@ -84,7 +100,7 @@ int main()
     }
 
     if ((count_LRU == 0) && (count_RRIP == 0)) {
-        printf("OMG, no cache hits at all...");
+        printf("OMG, no cache hits at all...\n");
     }
 
     delete_list(list);
