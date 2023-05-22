@@ -17,6 +17,6 @@ for i in range(N):
 
 list_str = [str(i) for i in list]
 
-with open("ma2_test3.in", "w") as f:
+with open("ma2_test2.in", "w") as f:
     f.write(str(size) + " " + str((k*A + m)*N) + " ")
     f.write(" ".join(list_str))
