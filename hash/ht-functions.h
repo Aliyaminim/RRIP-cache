@@ -1,3 +1,6 @@
+/* A header file to a C program that includes functions used in
+   hash table  */
+
 #pragma once
 
 /* dimension of hash table, that's prime number */

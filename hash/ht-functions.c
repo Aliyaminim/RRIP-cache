@@ -1,3 +1,6 @@
+/* A C file that includes realization of the functions used in
+   hash table */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>

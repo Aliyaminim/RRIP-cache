@@ -1,3 +1,6 @@
+/* A header file to a C program that includes functions used in
+ double linked list for hash table*/
+
 #pragma once
 
 /* creates hash table linked list, returns a pointer to the node hash table linked list */
