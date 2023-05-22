@@ -63,24 +63,27 @@ int main()
 
         if (hashsize - 1 < page) {
             //update_hash(&hashsize, page, hash_RRIP, hash_LRU);
-           
-            hash_RRIP = (Node_t **) realloc(hash_RRIP, (page + 1) * sizeof(Node_t *));
+
+            hash_RRIP =
+                (Node_t **) realloc(hash_RRIP,
+                                    (page + 1) * sizeof(Node_t *));
             for (long i = hashsize; i <= page; i++)
                 hash_RRIP[i] = NULL;
 
-            hash_LRU = (QNode **) realloc(hash_LRU, (page + 1) * sizeof(QNode* ));
+            hash_LRU =
+                (QNode **) realloc(hash_LRU, (page + 1) * sizeof(QNode *));
             for (long i = hashsize; i <= page; i++)
                 hash_LRU[i] = NULL;
 
             if ((hash_RRIP == NULL) || (hash_LRU == NULL)) {
                 fprintf(stderr, "Memory exhausted(during realloc)\n");
                 abort();
-            }   
+            }
 
-            hashsize = page + 1;      
+            hashsize = page + 1;
         }
-            
-		count_LRU += lru(page, queue, hash_LRU);
+
+        count_LRU += lru(page, queue, hash_LRU);
         count_RRIP += replacement_RRIP(page, list, table);
         count_check += replacement_RRIP_cop(page, list_check, hash_RRIP);
     }
@@ -94,6 +97,10 @@ int main()
 
     if ((count_LRU > count_RRIP) && (count_LRU != 0)) {
         printf("Suprisingly LRU has performed better...\n");
+    }
+
+    if ((count_RRIP > count_LRU) && (count_RRIP != 0)) {
+        printf("RRIP has performed better!!\n");
     }
 
     if ((count_LRU == 0) && (count_RRIP == 0)) {

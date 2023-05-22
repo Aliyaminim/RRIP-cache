@@ -6,8 +6,8 @@
 /* A List Node (the RRIP chain is implemented using Doubly Linked List) */
 typedef struct node_t {
     struct node_t *next, *prev;
-    long data;			//the data stored in this Node
-    unsigned value;		//the RRIP value stored by a 2-bit register per Node (details below)
+    long data;                  //the data stored in this Node
+    unsigned value;             //the RRIP value stored by a 2-bit register per Node (details below)
 } Node_t;
 /* An RRPV of 0 implies that a cache block is predicted to be re-referenced
    in the near-immediate future while RRPV of 3 implies that a cache 
@@ -23,33 +23,30 @@ typedef struct list_t {
     /* head is a pointer to the head of the List
        fst_dist is a pointer to the first Node in the List with distant RRIP
        tail is a pointer to the tail of the List */
-    long size;			//total number of Nodes in List
-    long full_nodes;		//number of filled Nodes in List
+    long size;                  //total number of Nodes in List
+    long full_nodes;            //number of filled Nodes in List
 } List_t;
 
-//implementation of hash table element structure, contatins long integer data (could be page number) and Node_t chain pointer value
-typedef struct HtElem HtElem;
-
-struct HtElem {
+/* A Hash table element structure, which contains long integer data (could be page number) 
+   and Node_t chain pointer value */
+typedef struct HtElem {
     long data;
     Node_t *value;
-};
+} HtElem;
 
-//implementation of Node Hash table Linked list, contains hash table element pointer of element and Node Hash table Linked list pointer to next element
-typedef struct NodeHtLl NodeHtLl;
-
-struct NodeHtLl {
+/* A Node Hash table Linked list, contains hash table element pointer of element and 
+   Node Hash table Linked list pointer to next element */
+typedef struct NodeHtLl {
     HtElem *elem;
-    NodeHtLl *next;
-};
+    struct NodeHtLl *next;
+} NodeHtLl;
 
-//implementation of hash table, contains the pointer to array of HtElem pointers and pointer to array of Node Hash table Linked list pointers
-typedef struct HashTable HashTable;
-
-struct HashTable {
+/* A Hash table, contains the pointer to array of HtElem pointers and pointer to 
+   array of Node Hash table Linked list pointers */
+typedef struct HashTable {
     HtElem **elems;
     NodeHtLl **overflow_list;
-};
+} HashTable;
 
 /* A utility function to create an empty List.
    The list can have at most 'size' nodes */
@@ -85,6 +82,9 @@ void print_list(const List_t * list);
 /* A utility function to delete List */
 void delete_list(List_t * list);
 
-void update_hash(long *phashsize, long page, Node_t** hash_RRIP, QNode** hash_LRU);
+/* A function to realloc hash_RRIP and hash_LRU, when new page doesn't fit into them*/
+void update_hash(long *phashsize, const long page, Node_t ** hash_RRIP,
+                 QNode ** hash_LRU);
 
-void delete_hashRRIP(Node_t** hash_RRIP);
+/* A utility function to free hash_RRIP */
+void delete_hashRRIP(Node_t ** hash_RRIP);
