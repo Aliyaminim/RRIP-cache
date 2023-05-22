@@ -3,7 +3,7 @@
 #include <assert.h>
 #include <string.h>
 #include "../lru/lru.h"
-#include "../functions.h"
+#include "../func_RRIP.h"
 #include "ht-linked-list.h"
 #include "ht-functions.h"
 

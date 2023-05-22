@@ -2,14 +2,14 @@ CC=gcc
 CFLAGS= 
 EXECUTABLE=program
 
-program: main.o functions.o lru.o ht-linked-list.o ht-functions.o 
-	@$(CC) -g $(CFLAGS) -o program main.o functions.o lru.o ht-linked-list.o ht-functions.o 
+program: main.o func_RRIP.o lru.o ht-linked-list.o ht-functions.o 
+	@$(CC) -g $(CFLAGS) -o program main.o func_RRIP.o lru.o ht-linked-list.o ht-functions.o 
 
-main.o: main.c ./lru/lru.h functions.h ./hash/ht-functions.h
+main.o: main.c ./lru/lru.h func_RRIP.h ./hash/ht-functions.h
 	@$(CC) $(CFLAGS) -g -c main.c
 
-functions.o: functions.c ./lru/lru.h functions.h ./hash/ht-linked-list.h ./hash/ht-functions.h
-	@$(CC) $(CFLAGS) -g -c functions.c
+func_RRIP.o: func_RRIP.c ./lru/lru.h func_RRIP.h ./hash/ht-linked-list.h ./hash/ht-functions.h
+	@$(CC) $(CFLAGS) -g -c func_RRIP.c
 
 lru.o: ./lru/lru.c ./lru/lru.h
 	@$(CC) $(CFLAGS) -g -c ./lru/lru.c

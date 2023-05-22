@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include "../lru/lru.h"
-#include "../functions.h"
+#include "../func_RRIP.h"
 #include "ht-linked-list.h"
 
 

@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include "./lru/lru.h"
-#include "functions.h"
+#include "func_RRIP.h"
 #include "./hash/ht-linked-list.h"
 #include "./hash/ht-functions.h"
 
