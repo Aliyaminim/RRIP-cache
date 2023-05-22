@@ -96,12 +96,17 @@ int main()
            count_RRIP, count_check, count_LRU);
 
     if ((count_LRU > count_RRIP) && (count_LRU != 0)) {
-        printf("Suprisingly LRU has performed better...\n");
+        printf("Suprisingly LRU has performed better...\n%ld more cache hits\n", count_LRU - count_RRIP);
     }
 
     if ((count_RRIP > count_LRU) && (count_RRIP != 0)) {
-        printf("RRIP has performed better!!\n");
+        printf("RRIP has performed better!!\n%ld more cache hits\n", count_RRIP - count_LRU);
     }
+
+    if ((count_RRIP == count_LRU) && (count_RRIP != 0)) {
+        printf("Got the same results\n");
+    }
+
 
     if ((count_LRU == 0) && (count_RRIP == 0)) {
         printf("OMG, no cache hits at all...\n");
