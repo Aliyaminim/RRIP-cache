@@ -3,25 +3,27 @@
 
 #pragma once
 
-typedef struct QNode {
-    long page;
-    struct QNode *prev, *next;
-} QNode;
+/* A Queue Node (the LRU chain is implemented using Doubly Linked List) */
+struct QNode;
 
-typedef struct Queue {
-    QNode *top, *end;
-    long max_cell;
-    long full_cell;
-} Queue;
+/* A Cache Queue (a collection of Nodes) */
+struct Queue;
 
-Queue *createQueue(const long m);
+/* A utility function to create an empty Queue */
+struct Queue *createQueue(const long m);
 
-void add_qnode(Queue * queue, const long page, QNode ** hash);
+/* A function to add a Node with given 'data' to both Queue and Hash, 
+   if it hasn't been in Queue before */
+void add_qnode(struct Queue * queue, const long page, struct QNode ** hash);
 
-int del_qnode(Queue * queue, QNode ** hash);
+/* A function to delete a Node from Queue */
+int del_qnode(struct Queue * queue, struct QNode ** hash);
 
-int lru(const long page, Queue * queue, QNode ** hash);
+/* A function to perform cache replacement using LRU */
+int lru(const long page, struct Queue * queue, struct QNode ** hash);
 
-void delete_hashLRU(QNode ** hash_LRU);
+/* A utility function to free hash_LRU */
+void delete_hashLRU(struct QNode ** hash_LRU);
 
-void delete_queue(Queue * queue);
+/* A utility function to delete Queue */
+void delete_queue(struct Queue * queue);

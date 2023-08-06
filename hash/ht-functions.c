@@ -38,7 +38,7 @@ void free_overflow_list(const HashTable * table)
 	free(buckets);
 }
 
-HtElem *create_elem(const long data, Node_t * value)
+HtElem *create_elem(const long data, struct node_t * value)
 {
 	HtElem *elem = (HtElem *) malloc(sizeof(HtElem));
 	if (elem == NULL) {
@@ -97,7 +97,7 @@ void solve_collision(const long index, HtElem * elem, HashTable * table)
 	}
 }
 
-void ht_insert(HashTable * table, const long data, Node_t * value)
+void ht_insert(HashTable * table, const long data, struct node_t * value)
 {
 	assert(table != NULL);
 	assert(value != NULL);
@@ -126,7 +126,7 @@ void ht_insert(HashTable * table, const long data, Node_t * value)
 	}
 }
 
-Node_t *ht_search(HashTable * table, const long data)
+struct node_t *ht_search(HashTable * table, const long data)
 {
 	assert(table != NULL);
 

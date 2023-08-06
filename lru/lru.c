@@ -8,38 +8,49 @@
 #include <assert.h>
 #include "lru.h"
 
-Queue *createQueue(const long m)
+struct QNode {
+    long page;
+    struct QNode *prev, *next;
+};
+
+struct Queue {
+    struct QNode *top, *end;
+    long max_cell;
+    long full_cell;
+};
+
+struct Queue *createQueue(const long cache_size)
 {
-    Queue *queue = (Queue *) calloc(1, sizeof(Queue));
+    struct Queue *queue = (struct Queue *) calloc(1, sizeof(struct Queue));
     if (queue == NULL) {
         fprintf(stderr, "Memory exhausted\n");
         abort();
     }
 
-    queue->max_cell = m;
+    queue->max_cell = cache_size;
     queue->full_cell = 0;
     queue->top = queue->end = NULL;
     return queue;
 }
 
-static int isQueueEmpty(const Queue * queue)
+static int isQueueEmpty(const struct Queue * queue)
 {
     assert((queue != NULL) && "Code doesn't work correctly");
     return queue->end == NULL;
 }
 
-static int isQueueFull(const Queue * queue)
+static int isQueueFull(const struct Queue * queue)
 {
     assert((queue != NULL) && "Code doesn't work correctly");
     return queue->max_cell == queue->full_cell;
 }
 
-void add_qnode(Queue * queue, const long page, QNode ** hash)
+void add_qnode(struct Queue * queue, const long page, struct QNode ** hash)
 {
     assert((queue->full_cell <= queue->max_cell) && (queue != NULL)
-           && (hash != NULL));
+           && (hash != NULL) && "Code doesn't work correctly");
 
-    QNode *tmp = (QNode *) calloc(1, sizeof(QNode));
+    struct QNode *tmp = (struct QNode *) calloc(1, sizeof(struct QNode));
     if (tmp == NULL) {
         fprintf(stderr, "Memory exhausted\n");
         abort();
@@ -59,14 +70,13 @@ void add_qnode(Queue * queue, const long page, QNode ** hash)
     hash[page] = tmp;
 }
 
-int del_qnode(Queue * queue, QNode ** hash)
+int del_qnode(struct Queue * queue, struct QNode ** hash)
 {
-    assert((queue != NULL) && (hash != NULL));
+    assert((queue != NULL) && (hash != NULL) && "Code doesn't work correctly");
 
-    QNode *tmp = queue->end;
+    struct QNode *tmp = queue->end;
     hash[queue->end->page] = NULL;
     if (queue->full_cell == 1) {
-        QNode *tmp = queue->end;
         queue->top = queue->end = NULL;
     } else {
         queue->end = queue->end->prev;
@@ -77,17 +87,16 @@ int del_qnode(Queue * queue, QNode ** hash)
     return 0;
 }
 
-int lru(const long page, Queue * queue, QNode ** hash)
+int lru(const long page, struct Queue * queue, struct QNode ** hash)
 {
-    assert((queue != NULL) && (hash != NULL));
+    assert((queue != NULL) && (hash != NULL) && "Code doesn't work correctly");
 
-    QNode *tmp = hash[page];
+    struct QNode *tmp = hash[page];
 
     if (isQueueEmpty(queue)) {
         add_qnode(queue, page, hash);
         return 0;
-    }
-    if (tmp == NULL) {
+    } else if (tmp == NULL) {
         if (isQueueFull(queue)) {
             del_qnode(queue, hash);
         }
@@ -100,42 +109,30 @@ int lru(const long page, Queue * queue, QNode ** hash)
         tmp->prev->next = tmp->next;
         if (tmp->next != NULL)
             tmp->next->prev = tmp->prev;
-
         else
             queue->end = tmp->prev;
 
-        assert(tmp == hash[page]);
         hash[page] = NULL;
         free(tmp);
-
         queue->full_cell -= 1;
+
         add_qnode(queue, page, hash);
         return 1;
     }
 }
 
-void delete_hashLRU(QNode ** hash_LRU)
+void delete_hashLRU(struct QNode ** hash_LRU)
 {
-    assert(hash_LRU != NULL);
-
-    QNode *next;
-    QNode *top = hash_LRU[0];
-
-    while (top != NULL) {
-        next = top->next;
-        free(top);
-        top = next;
-    }
-
+    assert(hash_LRU != NULL && "Code doesn't work correctly");
     free(hash_LRU);
 }
 
-void delete_queue(Queue * queue)
+void delete_queue(struct Queue * queue)
 {
-    assert(queue != NULL);
+    assert(queue != NULL && "Code doesn't work correctly");
 
-    QNode *next;
-    QNode *top = queue->top;
+    struct QNode *next;
+    struct QNode *top = queue->top;
 
     while (top != NULL) {
         next = top->next;

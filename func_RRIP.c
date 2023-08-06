@@ -9,15 +9,39 @@
 #include "./hash/ht-linked-list.h"
 #include "./hash/ht-functions.h"
 
-List_t *create_list(const long size)
+static const int RRIPval_MAX = 3;
+
+struct node_t {
+    struct node_t *next, *prev;
+    long data;                  //the data stored in this Node
+    unsigned value;             //the RRIP value stored by a 2-bit register per Node (details below)
+};
+/* An RRPV of 0 implies that a cache block is predicted to be re-referenced
+   in the near-immediate future while RRPV of 3 implies that a cache 
+   block is predicted to be re-referenced in the distant future. 
+   An RRPV of 2 represents a long re-reference interval. 
+   Quantitavely, RRIP predicts that blocks with small RRPVs are re-referenced sooner 
+   than blocks with large RRPVs */
+
+/* A List (a collection of Nodes in ascending order according to their RRIP) */
+struct list_t {
+    struct node_t *head, *fst_dist, *tail;
+    /* head is a pointer to the head of the List
+       fst_dist is a pointer to the first Node in the List with distant RRIP
+       tail is a pointer to the tail of the List */
+    long size;                  //total number of Nodes in List
+    long full_nodes;            //number of filled Nodes in List
+};
+
+struct list_t *create_list(const long cache_size)
 {
-    List_t *list = calloc(1, sizeof(List_t));
+    struct list_t *list = calloc(1, sizeof(struct list_t));
     if (list == NULL) {
         fprintf(stderr, "Memory exhausted\n");
         abort();
     }
     list->head = list->fst_dist = list->tail = NULL;
-    list->size = size;
+    list->size = cache_size;
     list->full_nodes = 0;
 
     return list;
@@ -25,9 +49,9 @@ List_t *create_list(const long size)
 
 /* A utility function to create a new List Node.
    The list Node will store the given 'data' */
-static Node_t *newNode(const long data)
+static struct node_t *newNode(const long data)
 {
-    Node_t *res = calloc(1, sizeof(Node_t));
+    struct node_t *res = calloc(1, sizeof(struct node_t));
     if (res == NULL) {
         fprintf(stderr, "Memory exhausted\n");
         abort();
@@ -40,20 +64,20 @@ static Node_t *newNode(const long data)
 }
 
 /* A utility function to check if List is empty */
-static int isListEmpty(const List_t * list)
+static int isListEmpty(const struct list_t * list)
 {
     assert((list != NULL) && "Code doesn't work correctly");
     return list->tail == NULL;
 }
 
 /* A utility function to check if there is slot available in memory */
-static int isListFull(const List_t * list)
+static int isListFull(const struct list_t * list)
 {
     assert((list != NULL) && "Code doesn't work correctly");
     return list->size == list->full_nodes;
 }
 
-void dequeue(Node_t * node, List_t * list, HashTable * table)
+void dequeue(struct node_t * node, struct list_t * list, HashTable * table)
 {
     assert((list != NULL) && (table != NULL) && (node != NULL)
            && "Code doesn't work correctly");
@@ -75,16 +99,16 @@ void dequeue(Node_t * node, List_t * list, HashTable * table)
     free(node);
 }
 
-void enqueue(List_t * list, HashTable * table, const long data)
+void enqueue(struct list_t * list, HashTable * table, const long data)
 {
     assert((list != NULL) && (table != NULL)
            && "Code doesn't work correctly");
-    Node_t *curnode = newNode(data);
+    struct node_t *curnode = newNode(data);
 
     if (isListFull(list)) {
         if (list->fst_dist == NULL) {
-            int i = 3 - list->tail->value;
-            Node_t *tmp = list->head;
+            int i = RRIPval_MAX - list->tail->value;
+            struct node_t *tmp = list->head;
 
             for (; tmp != NULL;) {
                 tmp->value += i;
@@ -95,7 +119,7 @@ void enqueue(List_t * list, HashTable * table, const long data)
             }
         }
 
-        Node_t *hlp = list->fst_dist->prev;
+        struct node_t *hlp = list->fst_dist->prev;
         dequeue(list->fst_dist, list, table);
 
         if (hlp != NULL) {
@@ -128,7 +152,7 @@ void enqueue(List_t * list, HashTable * table, const long data)
 
 }
 
-void cache_hit(Node_t * node, List_t * list)
+void cache_hit(struct node_t * node, struct list_t * list)
 {
     assert((list != NULL) && (node != NULL)
            && "Code doesn't work correctly");
@@ -162,11 +186,11 @@ void cache_hit(Node_t * node, List_t * list)
     return;
 }
 
-int replacement_RRIP(long page, List_t * list, HashTable * table)
+int replacement_RRIP(long page, struct list_t * list, HashTable * table)
 {
     assert((list != NULL) && (table != NULL)
            && "Code doesn't work correctly");
-    Node_t *node = NULL;
+    struct node_t *node = NULL;
 
     if (node = ht_search(table, page)) {
         cache_hit(node, list);
@@ -179,7 +203,7 @@ int replacement_RRIP(long page, List_t * list, HashTable * table)
     }
 }
 
-void dequeue_cop(Node_t * node, List_t * list, Node_t ** hash)
+void dequeue_cop(struct node_t * node, struct list_t * list, struct node_t ** hash)
 {
     assert((list != NULL) && (hash != NULL) && (node != NULL)
            && "Code doesn't work correctly");
@@ -201,16 +225,16 @@ void dequeue_cop(Node_t * node, List_t * list, Node_t ** hash)
     free(node);
 }
 
-void enqueue_cop(List_t * list, Node_t ** hash, const long data)
+void enqueue_cop(struct list_t * list, struct node_t ** hash, const long data)
 {
     assert((list != NULL) && (hash != NULL)
            && "Code doesn't work correctly");
-    Node_t *curnode = newNode(data);
+    struct node_t *curnode = newNode(data);
 
     if (isListFull(list)) {
         if (list->fst_dist == NULL) {
             int i = 3 - list->tail->value;
-            Node_t *tmp = list->head;
+            struct node_t *tmp = list->head;
 
             for (; tmp != NULL;) {
                 tmp->value += i;
@@ -221,7 +245,7 @@ void enqueue_cop(List_t * list, Node_t ** hash, const long data)
             }
         }
 
-        Node_t *hlp = list->fst_dist->prev;
+        struct node_t *hlp = list->fst_dist->prev;
         dequeue_cop(list->fst_dist, list, hash);
 
         if (hlp != NULL) {
@@ -254,11 +278,11 @@ void enqueue_cop(List_t * list, Node_t ** hash, const long data)
 
 }
 
-int replacement_RRIP_cop(long page, List_t * list, Node_t ** hash)
+int replacement_RRIP_cop(long page, struct list_t * list, struct node_t ** hash)
 {
     assert((list != NULL) && (hash != NULL)
            && "Code doesn't work correctly");
-    Node_t *node = NULL;
+    struct node_t *node = NULL;
 
     if (node = hash[page])      // Change arguments
     {
@@ -272,10 +296,10 @@ int replacement_RRIP_cop(long page, List_t * list, Node_t ** hash)
     }
 }
 
-void print_list(const List_t * list)
+void print_list(const struct list_t * list)
 {
     assert((list != NULL) && "Code doesn't work correctly");
-    Node_t *head = list->head;
+    struct node_t *head = list->head;
 
     while (head != NULL) {
         printf("%ld(%d) ", head->data, head->value);
@@ -286,11 +310,11 @@ void print_list(const List_t * list)
     return;
 }
 
-void delete_list(List_t * list)
+void delete_list(struct list_t * list)
 {
     assert((list != NULL) && "Code doesn't work correctly");
-    Node_t *next;
-    Node_t *top = list->head;
+    struct node_t *next;
+    struct node_t *top = list->head;
 
     while (top != NULL) {
         next = top->next;
@@ -301,34 +325,25 @@ void delete_list(List_t * list)
     free(list);
 }
 
-void delete_hashRRIP(Node_t ** hash_RRIP)
+void delete_hashRRIP(struct node_t ** hash_RRIP)
 {
     assert((hash_RRIP != NULL) && "Code doesn't work correctly");
-    Node_t *next;
-    Node_t *top = hash_RRIP[0];
-
-    while (top != NULL) {
-        next = top->next;
-        free(top);
-        top = next;
-    }
-
     free(hash_RRIP);
 }
 
-void update_hash(long *phashsize, const long page, Node_t ** hash_RRIP,
-                 QNode ** hash_LRU)
+void update_hash(long *phashsize, const long page, struct node_t ** hash_RRIP,
+                 struct QNode ** hash_LRU)
 {
     assert((hash_RRIP != NULL) && (hash_LRU != NULL) && (phashsize != NULL)
            && "Code doesn't work correctly");
 
-    Node_t **tmp1 =
-        (Node_t **) realloc(hash_RRIP, (page + 1) * sizeof(Node_t *));
+    struct node_t **tmp1 =
+        (struct node_t **) realloc(hash_RRIP, (page + 1) * sizeof(struct node_t *));
     for (long i = *phashsize; i <= page; i++)
         hash_RRIP[i] = NULL;
 
-    QNode **tmp2 =
-        (QNode **) realloc(hash_LRU, (page + 1) * sizeof(QNode *));
+    struct QNode **tmp2 =
+        (struct QNode **) realloc(hash_LRU, (page + 1) * sizeof(struct QNode *));
     for (long i = *phashsize; i <= page; i++)
         hash_LRU[i] = NULL;
 

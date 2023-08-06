@@ -1,5 +1,5 @@
-/* A C file that includes realization of the functions used in
-   Static Re-Reference Interval Prediction(RRIP) Cache Replacement */
+/* A C program which shows implementation of 
+   Static Re-Reference Interval Prediction(RRIP) in High Perfomance Cache Replacement  */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -10,8 +10,8 @@
 
 int main()
 {
-    Node_t **hash_RRIP;
-    QNode **hash_LRU;
+    struct node_t **hash_RRIP;
+    struct QNode **hash_LRU;
     long hashsize;
     HashTable *table;
 
@@ -23,9 +23,9 @@ int main()
        count_LRU tracks a number of cache hits in LRU replacement
        count_check tracks a number of cache hits in RRIP using simple hash(just array)
      */
-    List_t *list;
-    List_t *list_check;
-    Queue *queue;
+    struct list_t *list;
+    struct list_t *list_check;
+    struct Queue *queue;
 
     //scanning
     while (!scanf("%ld", &cache_size) || (cache_size <= 0))
@@ -37,8 +37,8 @@ int main()
             ("Waiting for the overall number of requests... It must be positive number\n");
 
     hashsize = num_req + 1;
-    hash_RRIP = calloc(hashsize, sizeof(Node_t *));
-    hash_LRU = calloc(hashsize, sizeof(QNode *));
+    hash_RRIP = calloc(hashsize, sizeof(struct node_t *));
+    hash_LRU = calloc(hashsize, sizeof(struct QNode *));
     table = create_table();
     list = create_list(cache_size);
     list_check = create_list(cache_size);
@@ -65,13 +65,13 @@ int main()
             //update_hash(&hashsize, page, hash_RRIP, hash_LRU);
 
             hash_RRIP =
-                (Node_t **) realloc(hash_RRIP,
-                                    (page + 1) * sizeof(Node_t *));
+                (struct node_t **) realloc(hash_RRIP,
+                                    (page + 1) * sizeof(struct node_t *));
             for (long i = hashsize; i <= page; i++)
                 hash_RRIP[i] = NULL;
 
             hash_LRU =
-                (QNode **) realloc(hash_LRU, (page + 1) * sizeof(QNode *));
+                (struct QNode **) realloc(hash_LRU, (page + 1) * sizeof(struct QNode *));
             for (long i = hashsize; i <= page; i++)
                 hash_LRU[i] = NULL;
 
