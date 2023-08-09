@@ -198,7 +198,7 @@ int replacement_RRIP(long page, struct list_t * list, HashTable * table)
     }
 }
 
-void dequeue_cop(struct node_t * node, struct list_t * list, struct node_t ** hash)
+static void dequeue_cop(struct node_t * node, struct list_t * list, struct node_t ** hash)
 {
     assert((list != NULL) && (hash != NULL) && (node != NULL)
            && "Code doesn't work correctly");
@@ -221,7 +221,7 @@ void dequeue_cop(struct node_t * node, struct list_t * list, struct node_t ** ha
     free(node);
 }
 
-void enqueue_cop(struct list_t * list, struct node_t ** hash, const long data)
+static void enqueue_cop(struct list_t * list, struct node_t ** hash, const long data)
 {
     assert((list != NULL) && (hash != NULL)
            && "Code doesn't work correctly");
@@ -274,7 +274,7 @@ void enqueue_cop(struct list_t * list, struct node_t ** hash, const long data)
 
 }
 
-int replacement_RRIP_cop(long page, struct list_t * list, struct node_t ** hash)
+extern int replacement_RRIP_cop(long page, struct list_t * list, struct node_t ** hash)
 {
     assert((list != NULL) && (hash != NULL)
            && "Code doesn't work correctly");
@@ -293,7 +293,7 @@ int replacement_RRIP_cop(long page, struct list_t * list, struct node_t ** hash)
 void print_list(const struct list_t * list)
 {
     assert((list != NULL) && "Code doesn't work correctly");
-    
+
     struct node_t *head = list->head;
 
     while (head != NULL) {
@@ -324,6 +324,29 @@ void delete_hashRRIP(struct node_t ** hash_RRIP)
 {
     assert((hash_RRIP != NULL) && "Code doesn't work correctly");
     free(hash_RRIP);
+}
+
+void print_results(const long count_RRIP, const long count_check, const long count_LRU) 
+{
+    printf("Number of cache hits:\nfor RRIP %ld (%ld)\nfor LRU %ld\n",
+           count_RRIP, count_check, count_LRU);
+
+    if ((count_LRU > count_RRIP) && (count_LRU != 0)) {
+        printf("Suprisingly LRU has performed better...\n%ld more cache hits\n", count_LRU - count_RRIP);
+    }
+
+    if ((count_RRIP > count_LRU) && (count_RRIP != 0)) {
+        printf("RRIP has performed better!!\n%ld more cache hits\n", count_RRIP - count_LRU);
+    }
+
+    if ((count_RRIP == count_LRU) && (count_RRIP != 0)) {
+        printf("Got the same results\n");
+    }
+
+
+    if ((count_LRU == 0) && (count_RRIP == 0)) {
+        printf("OMG, no cache hits at all...\n");
+    }
 }
 
 void update_hash(long *phashsize, const long page, struct node_t ** hash_RRIP,

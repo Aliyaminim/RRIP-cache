@@ -48,18 +48,16 @@ void cache_hit(struct node_t * node, struct list_t * list);
 /* A function to perform cache replacement using RRIP */
 int replacement_RRIP(long page, struct list_t * list, HashTable * table);
 
-/* A function to delete a Node from List */
-void dequeue_cop(struct node_t * node, struct list_t * list, struct node_t ** hash);
-
-/* A function to add a Node with given 'data' to both List and Hash using RRIP, if 
-   it hasn't been in List before */
-void enqueue_cop(struct list_t * list, struct node_t ** hash, const long data);
-
-/* A function to perform cache replacement using RRIP*/
-int replacement_RRIP_cop(const long page, struct list_t * list, struct node_t ** hash);
+/* A function to perform cache replacement using RRIP and simple hash */
+int replacement_RRIP_cop(long page, struct list_t * list, struct node_t ** hash);
 
 /* A utility function to print List */
 void print_list(const struct list_t * list);
+
+void print_results(const long count_RRIP, const long count_check, const long count_LRU);
+
+/* A utility function to free hash_RRIP */
+void delete_hashRRIP(struct node_t ** hash_RRIP);
 
 /* A utility function to delete List */
 void delete_list(struct list_t * list);
@@ -68,5 +66,4 @@ void delete_list(struct list_t * list);
 void update_hash(long *phashsize, const long page, struct node_t ** hash_RRIP,
                  struct QNode ** hash_LRU);
 
-/* A utility function to free hash_RRIP */
-void delete_hashRRIP(struct node_t ** hash_RRIP);
+
