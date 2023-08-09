@@ -274,7 +274,7 @@ static void enqueue_cop(struct list_t * list, struct node_t ** hash, const long 
 
 }
 
-extern int replacement_RRIP_cop(long page, struct list_t * list, struct node_t ** hash)
+int replacement_RRIP_cop(long page, struct list_t * list, struct node_t ** hash)
 {
     assert((list != NULL) && (hash != NULL)
            && "Code doesn't work correctly");
