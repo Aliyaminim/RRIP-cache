@@ -9,7 +9,9 @@
 #include "./hash/ht-linked-list.h"
 #include "./hash/ht-functions.h"
 
-static const int RRIPval_MAX = 3;
+static const int RRIPval_DIST = 3;
+static const int RRIPval_LONG = 2;
+static const int RRIPval_NEAR = 0;
 
 struct node_t {
     struct node_t *next, *prev;
@@ -58,7 +60,7 @@ static struct node_t *newNode(const long data)
     }
     res->next = res->prev = NULL;
     res->data = data;
-    res->value = 2;
+    res->value = RRIPval_LONG;
 
     return res;
 }
@@ -107,7 +109,7 @@ void enqueue(struct list_t * list, HashTable * table, const long data)
 
     if (isListFull(list)) {
         if (list->fst_dist == NULL) {
-            int i = RRIPval_MAX - list->tail->value;
+            int i = RRIPval_DIST - list->tail->value;
             struct node_t *tmp = list->head;
 
             for (; tmp != NULL;) {
@@ -157,32 +159,26 @@ void cache_hit(struct node_t * node, struct list_t * list)
     assert((list != NULL) && (node != NULL)
            && "Code doesn't work correctly");
     if (list->head == node) {
-        list->head->value = 0;
-        return;
-    }
-
-    if (list->tail == node) {
-        list->tail = node->prev;
-        list->tail->next = NULL;
-        list->head->prev = node;
-        node->next = list->head;
-        node->prev = NULL;
-        list->head = node;
-        node->value = 0;
+        node->value = RRIPval_NEAR;
         return;
     }
 
     if (list->fst_dist == node)
         list->fst_dist = node->next;
 
-    node->next->prev = node->prev;
-    node->prev->next = node->next;
+    if (list->tail == node) {
+        node->prev->next = node->next; 
+        list->tail = node->prev;
+    } else {
+        node->next->prev = node->prev;
+        node->prev->next = node->next; 
+    }
+
     node->prev = NULL;
     node->next = list->head;
     list->head->prev = node;
     list->head = node;
-    node->value = 0;
-
+    node->value = RRIPval_NEAR;
     return;
 }
 
@@ -190,16 +186,15 @@ int replacement_RRIP(long page, struct list_t * list, HashTable * table)
 {
     assert((list != NULL) && (table != NULL)
            && "Code doesn't work correctly");
-    struct node_t *node = NULL;
 
-    if (node = ht_search(table, page)) {
-        cache_hit(node, list);
-        return 1;
-    }
+    struct node_t *node = ht_search(table, page);
 
-    else {
+    if (node == NULL) {
         enqueue(list, table, page);
         return 0;
+    } else {
+        cache_hit(node, list);
+        return 1;
     }
 }
 
