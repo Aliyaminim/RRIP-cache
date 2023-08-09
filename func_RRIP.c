@@ -202,6 +202,7 @@ void dequeue_cop(struct node_t * node, struct list_t * list, struct node_t ** ha
 {
     assert((list != NULL) && (hash != NULL) && (node != NULL)
            && "Code doesn't work correctly");
+
     list->fst_dist = node->next;
 
     if (node != list->head)
@@ -277,15 +278,13 @@ int replacement_RRIP_cop(long page, struct list_t * list, struct node_t ** hash)
 {
     assert((list != NULL) && (hash != NULL)
            && "Code doesn't work correctly");
-    struct node_t *node = NULL;
 
-    if (node = hash[page])      // Change arguments
-    {
+    struct node_t *node = hash[page];
+
+    if (node != NULL) {
         cache_hit(node, list);
         return 1;
-    }
-
-    else {
+    } else {
         enqueue_cop(list, hash, page);
         return 0;
     }
@@ -294,6 +293,7 @@ int replacement_RRIP_cop(long page, struct list_t * list, struct node_t ** hash)
 void print_list(const struct list_t * list)
 {
     assert((list != NULL) && "Code doesn't work correctly");
+    
     struct node_t *head = list->head;
 
     while (head != NULL) {
