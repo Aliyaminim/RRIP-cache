@@ -40,7 +40,7 @@ void free_overflow_list(const HashTable * table)
 
 HtElem *create_elem(const long data, struct node_t * value)
 {
-	HtElem *elem = (HtElem *) malloc(sizeof(HtElem));
+	HtElem *elem = (HtElem *)calloc(1, sizeof(HtElem));
 	if (elem == NULL) {
         fprintf(stderr, "Memory exhausted\n");
         abort();
@@ -53,7 +53,7 @@ HtElem *create_elem(const long data, struct node_t * value)
 
 HashTable *create_table()
 {
-	HashTable *table = (HashTable *) malloc(sizeof(HashTable));
+	HashTable *table = (HashTable *) calloc(1, sizeof(HashTable));
 	table->elems = (HtElem **) calloc(modular, sizeof(HtElem *));
 
 	if (table == NULL || table->elems == NULL) {
@@ -110,16 +110,12 @@ void ht_insert(HashTable * table, const long data, struct node_t * value)
 
 	if (current_elem == NULL) {
 		table->elems[index] = elem;
-	}
-
-	else {
+	} else {
 		if (current_elem->data == data) {
-			table->elems[index]->value = value;
+			/*table->elems[index]->value = value;
 			value = table->elems[index]->value;
-			return;
-		}
-
-		else {
+			return;*/
+		} else {
 			solve_collision(index, elem, table);
 			return;
 		}

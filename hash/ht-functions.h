@@ -4,7 +4,7 @@
 #pragma once
 
 /* dimension of hash table, that's prime number */
-static const long modular = 1000019;
+static const long modular = 11;
 
 /* simple hash_function, takes long integer data, returns hash of data */
 long hash_function(const long data);

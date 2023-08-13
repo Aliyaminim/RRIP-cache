@@ -35,7 +35,7 @@ int main()
     while (!scanf("%ld", &num_req) || (num_req <= 0))
         printf
             ("Waiting for the overall number of requests... It must be positive number\n");
-
+         
     hashsize = num_req + 1;
     hash_RRIP = calloc(hashsize, sizeof(struct node_t *));
     hash_LRU = calloc(hashsize, sizeof(struct QNode *));

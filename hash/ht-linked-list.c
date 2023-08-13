@@ -11,7 +11,7 @@
 
 NodeHtLl *ht_ll_create()
 {
-	NodeHtLl *list = (NodeHtLl *) malloc(sizeof(NodeHtLl));
+	NodeHtLl *list = (NodeHtLl *) calloc(1, sizeof(NodeHtLl));
     if (list == NULL) {
         fprintf(stderr, "Memory exhausted\n");
         abort();
@@ -29,9 +29,7 @@ NodeHtLl *ht_ll_insert(NodeHtLl * list, HtElem * elem)
 		head->next = NULL;
 		list = head;
 		return list;
-	}
-
-	else if (list->next == NULL) {
+	} else if (list->next == NULL) {
 		NodeHtLl *node = ht_ll_create();
 		node->elem = elem;
 		node->next = NULL;
@@ -47,7 +45,7 @@ NodeHtLl *ht_ll_insert(NodeHtLl * list, HtElem * elem)
 	NodeHtLl *node = ht_ll_create();
 	node->elem = elem;
 	node->next = NULL;
-	temp->next = node;
+	temp->next->next = node;
 
 	return list;
 }
